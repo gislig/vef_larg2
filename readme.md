@@ -4,7 +4,9 @@
 * (5%) allBattles - Should return a collection of all battles. Contains a field
 argument called status which is of type BattleStatus (enum) and should be
 used to filter the data based on the status of the battle
-* (5%) allPlayers - Should return a collection of all players • (5%) pokemon - Should return a specific pokémon by id * (5%) battle - Should return a specific battle by id
+* (5%) allPlayers - Should return a collection of all players
+* (5%) pokemon - Should return a specific pokémon by id 
+* (5%) battle - Should return a specific battle by id
 * (5%) player - Should return a specific player by id
 ## Mutations (35%)
 * (5%) addBattle - Create a battle between two players pokémons and returns the newly created battle
