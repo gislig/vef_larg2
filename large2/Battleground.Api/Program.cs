@@ -9,6 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient<IPokemonService, PokemonService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>
+    ("PokemonApiBaseUrl"));
+});
+
 var config = builder.Configuration;
 var connString = config.GetConnectionString("BattlegroundConnectionString");
 builder.Services.AddDbContext<BattlegroundDbContext>(options => options.UseNpgsql(connString, x => x.MigrationsAssembly("Battleground.Api")));
