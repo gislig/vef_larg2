@@ -1,11 +1,17 @@
 using Battleground.Api.Schema;
+using Battleground.Repositories;
 using Battleground.Services.Implementations;
 using Battleground.Services.Interfaces;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var config = builder.Configuration;
+var connString = config.GetConnectionString("BattlegroundConnectionString");
+builder.Services.AddDbContext<BattlegroundDbContext>(options => options.UseNpgsql(connString, x => x.MigrationsAssembly("Battleground.Api")));
 
 builder.Services.AddDefer();
 builder.Services.AddHttpScope();

@@ -2,6 +2,9 @@ namespace Battleground.Repositories.Entities;
 
 public class BattlePlayer
 {
+    [Key]
+    public int Id { get; set; }
+    
     [ForeignKey("Battle")]
     public int BattlesId { get; set; }
     

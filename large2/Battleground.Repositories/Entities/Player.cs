@@ -1,6 +1,6 @@
 namespace Battleground.Repositories.Entities;
 
-public class Players
+public class Player
 {
     [Key, Required]
     public int Id { get; set; }
