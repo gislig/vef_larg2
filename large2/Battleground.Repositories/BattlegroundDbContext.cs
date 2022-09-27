@@ -17,7 +17,7 @@ namespace Battleground.Repositories
         public DbSet<BattlePokemon> BattlePokemons { get; set; }
         public DbSet<BattleStatus> BattleStatuses { get; set; }
         public DbSet<Player> Players { get; set; }
-        public DbSet<PlayerInventory> PlyerInventories { get; set; }
+        public DbSet<PlayerInventory> PlayerInventories { get; set; }
         
     }
 }
