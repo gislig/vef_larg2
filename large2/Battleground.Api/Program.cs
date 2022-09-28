@@ -1,5 +1,8 @@
 using Battleground.Api.Schema;
 using Battleground.Repositories;
+using Battleground.Repositories.Entities;
+using Battleground.Repositories.Implementations;
+using Battleground.Repositories.Interfaces;
 using Battleground.Services.Implementations;
 using Battleground.Services.Interfaces;
 using GraphQL;
@@ -25,6 +28,15 @@ builder.Services.AddTransient<IPokemonService, PokemonService>();
 builder.Services.AddTransient<IPlayerService, PlayerService>();
 builder.Services.AddTransient<IBattleService, BattleService>();
 builder.Services.AddTransient<IInventoryService, InventoryService>();
+
+builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
+builder.Services.AddTransient<IPokemonRepository, PokemonRepository>();
+builder.Services.AddTransient<IAttackRepository, AttackRepository>();
+builder.Services.AddTransient<IPlayerInventoryRepository, PlayerInventoryRepository>();
+builder.Services.AddTransient<IBattleRepository, BattleRepository>();
+builder.Services.AddTransient<IBattlePlayerRepository, BattlePlayerRepository>();
+builder.Services.AddTransient<IBattlePokemonRepository, BattlePokemonRepository>();
+builder.Services.AddTransient<IBattleStatusRepository, BattleStatusRepository>();
 
 builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddSystemTextJson()

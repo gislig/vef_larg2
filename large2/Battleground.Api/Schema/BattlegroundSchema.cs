@@ -11,4 +11,15 @@ public class BattlegroundSchema : GraphQL.Types.Schema
     {
         FieldMiddleware.Use(new InstrumentFieldsMiddleware());
     }
+    
+    /*
+     Queries
+        ○ pokemon(id: String): PokemonType
+        ○ allPokemons: [PokemonType!]!
+        ○ player(id: Int): PlayerType
+        ○ allPlayers: [PlayerType!]!
+        ○ battle(id: Int): BattleType
+        ○ allBattles(status: BattleStatus): [BattleType!]!
+      
+     */
 }
