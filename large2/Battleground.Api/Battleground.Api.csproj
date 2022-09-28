@@ -27,12 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Schema\Mutations\" />
-    <Folder Include="Schema\InputTypes\" />
-    <Folder Include="Schema\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Battleground.Repositories\Battleground.Repositories.csproj" />
     <ProjectReference Include="..\Battleground.Services\Battleground.Services.csproj" />
   </ItemGroup>

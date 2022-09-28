@@ -29,8 +29,8 @@ builder.Services.AddTransient<IPlayerService, PlayerService>();
 builder.Services.AddTransient<IBattleService, BattleService>();
 builder.Services.AddTransient<IInventoryService, InventoryService>();
 
+builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
 builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
-builder.Services.AddTransient<IPokemonRepository, PokemonRepository>();
 builder.Services.AddTransient<IAttackRepository, AttackRepository>();
 builder.Services.AddTransient<IPlayerInventoryRepository, PlayerInventoryRepository>();
 builder.Services.AddTransient<IBattleRepository, BattleRepository>();

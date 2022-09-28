@@ -6,6 +6,12 @@ namespace Battleground.Repositories.Implementations;
 
 public class PokemonRepository : IPokemonRepository
 {
+    private readonly BattlegroundDbContext _dbContext;
+    public PokemonRepository(BattlegroundDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
     // Gets all pokemons from the API and returns them as a model list Pokemon
     public async Task<IEnumerable<Pokemon>?> GetAllPokemons()
     {
