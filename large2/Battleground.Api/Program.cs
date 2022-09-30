@@ -42,7 +42,7 @@ builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddSystemTextJson()
     .AddErrorInfoProvider(opt => opt.ExposeExceptionDetails = true)
     .AddSchema<BattlegroundSchema>()
-    .AddGraphTypes()
+    .AddGraphTypes(typeof(BattlegroundSchema).Assembly)
     .AddDataLoader());
 
 var app = builder.Build();
