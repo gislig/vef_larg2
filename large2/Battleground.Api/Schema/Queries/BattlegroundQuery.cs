@@ -9,9 +9,11 @@ namespace Battleground.Api.Schema.Queries
     public class BattlegroundQuery : ObjectGraphType
     {
         private readonly IPokemonService _pokemonService;
-        public BattlegroundQuery(IPokemonService pokemonService)
+        private readonly IPlayerService _playerService;
+        public BattlegroundQuery(IPokemonService pokemonService, IPlayerService playerService)
         {
             _pokemonService = pokemonService;
+            _playerService = playerService;
 
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
