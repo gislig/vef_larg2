@@ -8,26 +8,25 @@ namespace Battleground.Api.Schema.Queries
 {
     public class BattlegroundQuery : ObjectGraphType
     {
+        private readonly IPokemonService _pokemonService;
         private readonly IPlayerService _playerService;
-
-        public BattlegroundQuery(IPlayerService pokemonService)
+        private readonly IBattleService _battleService;
+        public BattlegroundQuery(IPokemonService pokemonService, IPlayerService playerService, IBattleService battleService)
         {
-            _playerService = pokemonService;
+            _pokemonService = pokemonService;
+            _playerService = playerService;
+            _battleService = battleService;
 
+            Field<PokemonType>("pokemon")
+            .Argument<StringGraphType>("name")
+            .ResolveAsync(async context => {
+            var name = context.GetArgument<string>("name");
+            return await _pokemonService.GetPokemonByName(name);
+            });
             
 
-            // Field<ListGraphType<PokemonType>>("allPokemons")
-            // .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
-
-            // Field<PokemonType>("pokemon")
-            // .Argument<StringGraphType>("name")
-            // .ResolveAsync(async context => {
-            // var name = context.GetArgument<string>("name");
-            // return await _pokemonService.GetPokemonByName(name);
-            // });
-
             Field<ListGraphType<PlayerType>>("allPlayers")
-            .Resolve(context => pokemonService.AllPlayers().AsEnumerable());
+            .Resolve(context => _playerService.AllPlayers());
             
             // TODO: allBattles(status: BattleStatus): [BattleType!]! -> status:BattleStatus vantar!
             // Field<NonNullGraphType<ListGraphType<NonNullGraphType<BattleType>>>>
