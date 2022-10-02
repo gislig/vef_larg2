@@ -11,7 +11,7 @@ public class BattlegroundSchema : GraphQL.Types.Schema
     {
         Query = provider.GetRequiredService<BattlegroundQuery>();
         Mutation = provider.GetRequiredService<BattlegroundMutation>();
-
+        
         FieldMiddleware.Use(new InstrumentFieldsMiddleware());
     }
 }

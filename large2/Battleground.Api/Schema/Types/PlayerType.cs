@@ -1,9 +1,10 @@
-using Battleground.Repositories.Entities;
+
+using Battleground.Models.Models;
 using GraphQL.Types;
 
 namespace Battleground.Api.Schema.Types
 {
-    public sealed class PlayerType : ObjectGraphType<Player>
+    public sealed class PlayerType : ObjectGraphType<PlayerModel>
     {
         public PlayerType()
         {

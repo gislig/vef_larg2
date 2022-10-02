@@ -1,11 +1,14 @@
 using Battleground.Api.Schema.Types;
+using Battleground.Repositories.Interfaces;
+using Battleground.Services.Interfaces;
 using GraphQL.Types;
 
 namespace Battleground.Api.Schema.Queries
 {
     public class BattlegroundQuery : ObjectGraphType
     {
-        public BattlegroundQuery()
+
+        public BattlegroundQuery(IPokemonService pokemonService)
         {
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<PlayerType>>>>
             ("allPlayers")
@@ -13,7 +16,6 @@ namespace Battleground.Api.Schema.Queries
                     return null;
                 });
 
-            // TODO: player(id: Int): PlayerType -> id: Int vantar!
             Field<PlayerType>
             ("player")
                 .Argument<IntGraphType>("id")
@@ -43,11 +45,8 @@ namespace Battleground.Api.Schema.Queries
             
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<PokemonType>>>>
             ("allPokemons")
-                .Resolve(context => {
-                    return null;
-                });
+                .ResolveAsync(async context => await pokemonService.GetAllPokemons());
 
-            // TODO: pokemon(id: String): PokemonType -> id: String vantar!
             Field<PokemonType>
             ("pokemon")
                 .Argument<StringGraphType>("id")

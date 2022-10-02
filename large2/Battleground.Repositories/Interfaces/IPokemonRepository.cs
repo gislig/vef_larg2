@@ -1,9 +1,9 @@
-using Battleground.Repositories.Entities;
+using Battleground.Models.Models;
 
 namespace Battleground.Repositories.Interfaces;
 
 public interface IPokemonRepository
 {
-    Task<IEnumerable<Pokemon>?> GetAllPokemons();
-    Task<Pokemon?> GetPokemonByName(string name);
+    Task<IEnumerable<PokemonModel>?> GetAllPokemons();
+    Task<PokemonModel?> GetPokemonByName(string name);
 }
