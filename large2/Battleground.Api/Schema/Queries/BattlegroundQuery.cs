@@ -1,5 +1,5 @@
+using GraphQL;
 using Battleground.Api.Schema.Types;
-using Battleground.Repositories.Interfaces;
 using Battleground.Services.Interfaces;
 using GraphQL.Types;
 
@@ -7,22 +7,21 @@ namespace Battleground.Api.Schema.Queries
 {
     public class BattlegroundQuery : ObjectGraphType
     {
-
+        private readonly IPokemonService _pokemonService;
         public BattlegroundQuery(IPokemonService pokemonService)
         {
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<PlayerType>>>>
-            ("allPlayers")
-                .Resolve(context => {
-                    return null;
-                });
+            _pokemonService = pokemonService;
 
-            Field<PlayerType>
-            ("player")
-                .Argument<IntGraphType>("id")
-                .Resolve(context => {
-                    var idArgument = context.Arguments["id"];
-                    return null;
-                });
+            Field<ListGraphType<PokemonType>>("allPokemons")
+            .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
+
+            Field<PokemonType>("pokemon")
+            .Argument<StringGraphType>("name")
+            .ResolveAsync(async context => {
+            var name = context.GetArgument<string>("name");
+            return await _pokemonService.GetPokemonByName(name);
+            }
+            ); 
             
             
             // TODO: allBattles(status: BattleStatus): [BattleType!]! -> status:BattleStatus vantar!
@@ -43,17 +42,17 @@ namespace Battleground.Api.Schema.Queries
             //     });
 
             
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<PokemonType>>>>
-            ("allPokemons")
-                .ResolveAsync(async context => await pokemonService.GetAllPokemons());
+            // Field<NonNullGraphType<ListGraphType<NonNullGraphType<PokemonType>>>>
+            // ("allPokemons")
+            //     .ResolveAsync(async context => await pokemonService.GetAllPokemons());
 
-            Field<PokemonType>
-            ("pokemon")
-                .Argument<StringGraphType>("id")
-                .Resolve(context => {
-                    var idArgument = context.Arguments["id"];
-                    return null;
-             });
+            // Field<PokemonType>
+            // ("pokemon")
+            //     .Argument<StringGraphType>("id")
+            //     .Resolve(context => {
+            //         var idArgument = context.Arguments["id"];
+            //         return null;
+            //  });
         }
     }
 }

@@ -1,20 +1,22 @@
-using Battleground.Models.Models;
 using GraphQL.Types;
+using Battleground.Repositories.Entities;
+using Battleground.Models.Dtos;
+namespace Battleground.Api.Schema.Types;
+// public class Pokemon
+// {
+//     public string name { get; set; } = null!;
+//     public int healthPoints { get; set; }
+//     public int baseAttack { get; set; }
+//     public int weight { get; set; }
+// }
 
-namespace Battleground.Api.Schema.Types
+public sealed class PokemonType : ObjectGraphType<PokemonDto>
 {
-    public class PokemonType : ObjectGraphType<PokemonModel>
+    public PokemonType()
     {
-        public PokemonType()
-        {
-            Field(x => x.name).Description("The name of the Pokemon.");
-            Field(x => x.baseAttack).Description("Attack strength.");
-            Field(x => x.healthPoints).Description("Health of the Pokemon.");
-            Field(x => x.weight).Description("The weight of the Pokemon.");
-            // Field<NonNullGraphType<ListGraphType<NonNullGraphType<PlayerType>>>>("owners")
-            //     .Resolve(context => {
-            //         return null;
-            //     });
-        }
+        Field(x => x.name).Description("The name of the pokemon");
+        Field(x => x.healthPoints).Description("The health points of the pokemon");
+        Field(x => x.baseAttack).Description("The base attack of the pokemon");
+        Field(x => x.weight).Description("The weight of the pokemon");
     }
 }

@@ -1,10 +1,10 @@
 
-using Battleground.Models.Models;
+using Battleground.Models.Dtos;
 using GraphQL.Types;
 
 namespace Battleground.Api.Schema.Types
 {
-    public sealed class PlayerType : ObjectGraphType<PlayerModel>
+    public sealed class PlayerType : ObjectGraphType<PlayerDto>
     {
         public PlayerType()
         {
