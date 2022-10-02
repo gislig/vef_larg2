@@ -6,6 +6,7 @@ namespace Battleground.Api.Schema.Types
 {
     public sealed class PlayerType : ObjectGraphType<PlayerDto>
     {
+        
         public PlayerType()
         {
             Field(x => x.Id).Description("The id of the player.");
