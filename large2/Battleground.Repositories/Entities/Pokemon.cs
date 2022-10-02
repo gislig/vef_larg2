@@ -1,10 +1,8 @@
-// namespace Battleground.Repositories.Entities;
-
-// // https://pokemon-proxy-api.herokuapp.com/pokemons
-// public class Pokemon
-// {
-//     public string Name { get; set; }
-//     public int HealthPoints { get; set; }
-//     public int BaseAttack { get; set; }
-//     public int Weight { get; set; }
-// }
+namespace Battleground.Repositories.Entities;
+public class Pokemon
+    {
+        public string name { get; set; }
+        public int healthPoints { get; set; }
+        public int baseAttack { get; set; }
+        public int weight { get; set; }
+    }
