@@ -1,9 +1,9 @@
-﻿using Battleground.Models.Models;
+﻿using Battleground.Models.Dtos;
 
 namespace Battleground.Services.Interfaces;
 
 public interface IPokemonService
 {
-    Task<IEnumerable<PokemonModel>?> GetAllPokemons();
-    Task<PokemonModel?> GetPokemonByName(string name);
+    Task<IEnumerable<PokemonDto>?> GetAllPokemons();
+    Task<PokemonDto?> GetPokemonByName(string name);
 }

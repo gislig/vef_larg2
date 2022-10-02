@@ -1,25 +1,20 @@
-﻿using Battleground.Models.Models;
-using Battleground.Repositories.Interfaces;
+﻿using Battleground.Models.Dtos;
 using Battleground.Services.Interfaces;
+using System.Net.Http.Json;
 
 namespace Battleground.Services.Implementations;
 
 public class PokemonService : IPokemonService
 {
-    private readonly IPokemonRepository _pokemonRepository;
+    private readonly HttpClient _httpClient;
 
-    public PokemonService(IPokemonRepository pokemonRepository)
+    public PokemonService(HttpClient httpClient)
     {
-        _pokemonRepository = pokemonRepository;
+        _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<PokemonModel>?> GetAllPokemons()
-    {
-        return await _pokemonRepository.GetAllPokemons();
-    }
-
-    public async Task<PokemonModel?> GetPokemonByName(string name)
-    {
-        return await _pokemonRepository.GetPokemonByName(name);
-    }
+public async Task<IEnumerable<PokemonDto>?> GetAllPokemons() =>
+        await _httpClient.GetFromJsonAsync<IEnumerable<PokemonDto>>("pokemons");
+    public async Task<PokemonDto?> GetPokemonByName(string name) =>
+        await _httpClient.GetFromJsonAsync<PokemonDto>($"pokemons/{name}");
 }

@@ -1,6 +1,7 @@
 using GraphQL;
 using Battleground.Api.Schema.Types;
 using Battleground.Services.Interfaces;
+
 using GraphQL.Types;
 
 namespace Battleground.Api.Schema.Queries
@@ -20,9 +21,7 @@ namespace Battleground.Api.Schema.Queries
             .ResolveAsync(async context => {
             var name = context.GetArgument<string>("name");
             return await _pokemonService.GetPokemonByName(name);
-            }
-            ); 
-            
+            });
             
             // TODO: allBattles(status: BattleStatus): [BattleType!]! -> status:BattleStatus vantar!
             // Field<NonNullGraphType<ListGraphType<NonNullGraphType<BattleType>>>>
@@ -42,17 +41,6 @@ namespace Battleground.Api.Schema.Queries
             //     });
 
             
-            // Field<NonNullGraphType<ListGraphType<NonNullGraphType<PokemonType>>>>
-            // ("allPokemons")
-            //     .ResolveAsync(async context => await pokemonService.GetAllPokemons());
-
-            // Field<PokemonType>
-            // ("pokemon")
-            //     .Argument<StringGraphType>("id")
-            //     .Resolve(context => {
-            //         var idArgument = context.Arguments["id"];
-            //         return null;
-            //  });
         }
     }
 }
