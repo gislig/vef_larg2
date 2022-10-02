@@ -51,7 +51,7 @@ public class BattleService : IBattleService
         await _dbContext.SaveChangesAsync();
         return battle;
     }
-    public IEnumerable<Attack> GetAllAttacks()
+    public async Task<IEnumerable<Attack>> GetAllAttacks()
     {
         return _dbContext.Attacks;
     }

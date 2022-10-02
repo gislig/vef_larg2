@@ -7,10 +7,10 @@ namespace Battleground.Services.Interfaces;
 
 public interface IBattleService
 {
-    public Task<Battle> CreateBattle(Battle battle);
-    public Task<Battle> UpdateBattle(Battle battle);
-    public Task<Battle> DeleteBattle(Battle battle);
-    public IEnumerable<Attack> GetAllAttacks();
-    public Task<Attack?> GetAttackAsync(int id);
+    Task<Battle> CreateBattle(Battle battle);
+    Task<Battle> UpdateBattle(Battle battle);
+    Task<Battle> DeleteBattle(Battle battle);
+    Task<IEnumerable<Attack>> GetAllAttacks();
+    Task<Attack?> GetAttackAsync(int id);
 
 }

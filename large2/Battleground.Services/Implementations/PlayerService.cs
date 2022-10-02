@@ -21,13 +21,9 @@ public class PlayerService : IPlayerService
     }
     
     // (5%) allPlayers - Should return a collection of all players
-    public IEnumerable<PlayerDto?> AllPlayers()
+    public async Task<IEnumerable<Player?>> AllPlayers()
     {
-        return _dbContext.Players.Select(a => new PlayerDto {
-            Id = a.Id,
-            Name = a.Name,
-            Deleted = a.Deleted
-        });
+        return await _dbContext.Players.ToListAsync();
     }
     
     // Create a new player
