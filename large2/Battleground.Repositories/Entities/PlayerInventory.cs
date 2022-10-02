@@ -10,5 +10,5 @@ public class PlayerInventory
     
     public DateTime AcquiredDate { get; set; }
     
-    public int PokemonIdentifier { get; set; } // TODO: Hvað er þetta?
+    public string PokemonIdentifier { get; set; }
 }
