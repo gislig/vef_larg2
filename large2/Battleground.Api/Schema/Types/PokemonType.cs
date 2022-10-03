@@ -1,9 +1,10 @@
-using Battleground.Models.Models;
+
+using Battleground.Models.Dtos;
 using GraphQL.Types;
 
 namespace Battleground.Api.Schema.Types
 {
-    public class PokemonType : ObjectGraphType<PokemonModel>
+    public class PokemonType : ObjectGraphType<PokemonDto>
     {
         public PokemonType()
         {
