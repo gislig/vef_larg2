@@ -27,6 +27,7 @@ namespace Battleground.Api.Schema.Queries
             //_battleService = battleService;
             //_inventoryService = inventoryService;
 
+            // TODO: Hér setjum við inn queries fyrir Players
             Field<ListGraphType<PlayerType>>("playersFromDB", resolve: context =>
             { 
                 var playerContext = context.RequestServices.GetRequiredService<BattlegroundDbContext>();
@@ -34,8 +35,26 @@ namespace Battleground.Api.Schema.Queries
 
                 return players;
             });
-                
             
+            // TODO: Hér setjum við inn queries fyrir Battles
+            Field<ListGraphType<BattleType>>("battlesFromDB", resolve: context =>
+            {
+                var battleContext = context.RequestServices.GetRequiredService<BattlegroundDbContext>();
+                var battles = battleContext.Battles.ToList();
+
+                return battles;
+            });
+
+            // TODO: Hér setjum við inn queries fyrir Inventories
+            Field<ListGraphType<PlayerType>>("inventoriesFromDB", resolve: context =>
+            {
+                var inventoryContext = context.RequestServices.GetRequiredService<BattlegroundDbContext>();
+                var inventories = inventoryContext.PlayerInventories.Include(c => c.PokemonIdentifier).ToList();
+                
+                return inventories;
+            });
+
+
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
 
