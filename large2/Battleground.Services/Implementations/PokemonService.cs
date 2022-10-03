@@ -13,7 +13,7 @@ public class PokemonService : IPokemonService
         _httpClient = httpClient;
     }
 
-public async Task<IEnumerable<PokemonDto>?> GetAllPokemons() =>
+    public async Task<IEnumerable<PokemonDto>?> GetAllPokemons() =>
         await _httpClient.GetFromJsonAsync<IEnumerable<PokemonDto>>("pokemons");
     public async Task<PokemonDto?> GetPokemonByName(string name) =>
         await _httpClient.GetFromJsonAsync<PokemonDto>($"pokemons/{name}");
