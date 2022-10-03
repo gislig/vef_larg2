@@ -10,18 +10,17 @@ namespace Battleground.Api.Schema.Queries
     {
         private readonly IPlayerService _playerService;
         private readonly IPokemonService _pokemonService;
-        //private readonly IBattleService _battleService;
-        //private readonly IInventoryService _inventoryService;
+        private readonly IBattleService _battleService;
+        private readonly IInventoryService _inventoryService;
         
         
-        public BattlegroundQuery(IPlayerService playerService, IPokemonService pokemonService)
+        public BattlegroundQuery(IPokemonService pokemonService)
         {
-            _playerService = playerService;
+            //_playerService = playerService;
             _pokemonService = pokemonService;
             //_battleService = battleService;
             //_inventoryService = inventoryService;
             
-
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
 
@@ -30,6 +29,7 @@ namespace Battleground.Api.Schema.Queries
             .ResolveAsync(async context => {
             var name = context.GetArgument<string>("name");
             return await _pokemonService.GetPokemonByName(name);
+            
             });
             
             // TODO: allBattles(status: BattleStatus): [BattleType!]! -> status:BattleStatus vantar!
