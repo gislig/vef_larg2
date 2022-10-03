@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient<IPokemonRepository, PokemonRepository>();
+// builder.Services.AddHttpClient<IPokemonRepository, PokemonRepository>();
 
 var config = builder.Configuration;
 var connString = config.GetConnectionString("BattlegroundConnectionString");
@@ -26,7 +26,7 @@ builder.Services.AddTransient<IPlayerService, PlayerService>();
 builder.Services.AddTransient<IBattleService, BattleService>();
 builder.Services.AddTransient<IInventoryService, InventoryService>();
 
-builder.Services.AddTransient<IPokemonRepository, PokemonRepository>();
+// builder.Services.AddTransient<IPokemonRepository, PokemonRepository>();
 builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
 builder.Services.AddTransient<IAttackRepository, AttackRepository>();
 builder.Services.AddTransient<IPlayerInventoryRepository, PlayerInventoryRepository>();
@@ -34,6 +34,11 @@ builder.Services.AddTransient<IBattleRepository, BattleRepository>();
 builder.Services.AddTransient<IBattlePlayerRepository, BattlePlayerRepository>();
 builder.Services.AddTransient<IBattlePokemonRepository, BattlePokemonRepository>();
 builder.Services.AddTransient<IBattleStatusRepository, BattleStatusRepository>();
+
+builder.Services.AddHttpClient<IPokemonService, PokemonService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("PokemonApiBaseUrl"));
+});
+
 
 builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddSystemTextJson()
