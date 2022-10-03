@@ -28,23 +28,27 @@ namespace Battleground.Api.Schema.Queries
             //_inventoryService = inventoryService;
 
             // TODO: Hér setjum við inn queries fyrir Players
-            Field<ListGraphType<PlayerType>>("playersFromDB", resolve: context =>
-            { 
-                var playerContext = context.RequestServices.GetRequiredService<BattlegroundDbContext>();
-                var players = playerContext.Players.ToList();
+            Field<ListGraphType<PlayerType>>("playersFromDB")
+                .ResolveAsync(async context =>
+                { 
+                    var playerContext = context.RequestServices
+                        .GetRequiredService<BattlegroundDbContext>();
+                    var players = playerContext.Players.ToListAsync();
 
-                return players;
-            });
+                    return players;
+                });
+            
             /*
+            // TODO: Ef það er bætt inn öðru db query þá fer allt í köku
+            Field<ListGraphType<BattleType>>("battlesFromDB")
+                .ResolveAsync(async context =>
+                { 
+                    var playerContext = context.RequestServices
+                        .GetRequiredService<BattlegroundDbContext>();
+                    var players = playerContext.Battles.ToListAsync();
 
-            // TODO: Hér setjum við inn queries fyrir Battles
-            Field<ListGraphType<BattleType>>("battlesFromDB", resolve: context =>
-            {
-                var battleContext = context.RequestServices.GetRequiredService<BattlegroundDbContext>();
-                var battles = battleContext.Battles.ToList();
-
-                return battles;
-            });
+                    return players;
+                });
 
             // TODO: Hér setjum við inn queries fyrir Inventories
             Field<ListGraphType<PlayerType>>("inventoriesFromDB", resolve: context =>
