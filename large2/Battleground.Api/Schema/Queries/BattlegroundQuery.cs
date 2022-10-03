@@ -1,25 +1,40 @@
 using GraphQL;
 using Battleground.Api.Schema.Types;
+using Battleground.Repositories;
+using Battleground.Repositories.Entities;
 using Battleground.Services.Interfaces;
 
 using GraphQL.Types;
+using Microsoft.EntityFrameworkCore;
 
 namespace Battleground.Api.Schema.Queries
 {
     public class BattlegroundQuery : ObjectGraphType
     {
+        // TODO: Ef DbContext er í þessum þá fer allt í kakó, hvort sem það er í service eða í þessum klasa.
+        //private readonly BattlegroundDbContext _dbContext;
+        
         private readonly IPlayerService _playerService;
         private readonly IPokemonService _pokemonService;
         private readonly IBattleService _battleService;
         private readonly IInventoryService _inventoryService;
-        
-        
+
         public BattlegroundQuery(IPokemonService pokemonService)
         {
+            //_dbContext = dbContext;
             //_playerService = playerService;
             _pokemonService = pokemonService;
             //_battleService = battleService;
             //_inventoryService = inventoryService;
+
+            Field<ListGraphType<PlayerType>>("playersFromDB", resolve: context =>
+            { 
+                var playerContext = context.RequestServices.GetRequiredService<BattlegroundDbContext>();
+                var players = playerContext.Players.ToList();
+
+                return players;
+            });
+                
             
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());

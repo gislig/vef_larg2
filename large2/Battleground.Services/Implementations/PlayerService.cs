@@ -9,11 +9,14 @@ namespace Battleground.Services.Implementations;
 public class PlayerService : IPlayerService
 {
     
+    
     private readonly BattlegroundDbContext _dbContext;
-    public PlayerService(BattlegroundDbContext dbContext)
+    public PlayerService(BattlegroundDbContext context)
     {
-        _dbContext = dbContext;
+        _dbContext = context;
     }
+
+
     /*
     // (5%) player - Should return a specific player by id
     public async Task<Player?> GetPlayerById(int id)

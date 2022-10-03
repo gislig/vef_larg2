@@ -24,14 +24,14 @@ builder.Services.AddHttpClient<IPokemonService, PokemonService>(client => {
 });
 
 // TODO: Bætti þessu við, setti ContextFactory og setti inn ServiceLifetime sem scoped.
-builder.Services.AddScoped<BattlegroundDbContext>();
-builder.Services.AddDbContextFactory<BattlegroundDbContext>(options => 
+//builder.Services.AddScoped<BattlegroundDbContext>();
+builder.Services.AddDbContext<BattlegroundDbContext>(options => 
 {
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("BattlegroundConnectionString"),
         b => b.MigrationsAssembly("Battleground.Api")
     );
-}, ServiceLifetime.Scoped);
+});
 
 builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddSystemTextJson()
