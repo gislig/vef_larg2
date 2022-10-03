@@ -14,10 +14,10 @@ namespace Battleground.Api.Schema.Queries
         // TODO: Ef DbContext er í þessum þá fer allt í kakó, hvort sem það er í service eða í þessum klasa.
         //private readonly BattlegroundDbContext _dbContext;
         
-        private readonly IPlayerService _playerService;
+        //private readonly IPlayerService _playerService;
         private readonly IPokemonService _pokemonService;
-        private readonly IBattleService _battleService;
-        private readonly IInventoryService _inventoryService;
+        //private readonly IBattleService _battleService;
+        //private readonly IInventoryService _inventoryService;
 
         public BattlegroundQuery(IPokemonService pokemonService)
         {
@@ -35,7 +35,8 @@ namespace Battleground.Api.Schema.Queries
 
                 return players;
             });
-            
+            /*
+
             // TODO: Hér setjum við inn queries fyrir Battles
             Field<ListGraphType<BattleType>>("battlesFromDB", resolve: context =>
             {
@@ -53,8 +54,8 @@ namespace Battleground.Api.Schema.Queries
                 
                 return inventories;
             });
-
-
+            */
+            
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
 
