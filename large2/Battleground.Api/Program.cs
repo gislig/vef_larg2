@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Builder;
 using Battleground.Repositories;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefer();
 builder.Services.AddHttpScope();
 
-builder.Services.AddDbContext<BattlegroundDbContext>(options => 
+builder.Services.AddDbContextFactory<BattlegroundDbContext>(options => 
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("BattlegroundConnectionString"), b => b.MigrationsAssembly("Battleground.Api"));
 });
@@ -23,6 +24,7 @@ builder.Services.AddTransient<IInventoryService, InventoryService>();
 builder.Services.AddHttpClient<IPokemonService, PokemonService>(client => {
     client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("PokemonApiBaseUrl"));
 });
+
 builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddSystemTextJson()
     .AddErrorInfoProvider(opt => opt.ExposeExceptionDetails = true)

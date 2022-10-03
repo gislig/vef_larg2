@@ -23,7 +23,7 @@ namespace Battleground.Api.Schema.Queries
             var name = context.GetArgument<string>("name");
             return await _pokemonService.GetPokemonByName(name);
             });
-            
+
 
             Field<ListGraphType<PlayerType>>("allPlayers")
             .Resolve(context => _playerService.AllPlayers());
