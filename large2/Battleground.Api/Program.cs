@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Battleground.Repositories;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -19,19 +20,12 @@ builder.Services.AddTransient<IPlayerService, PlayerService>();
 builder.Services.AddTransient<IBattleService, BattleService>();
 builder.Services.AddTransient<IInventoryService, InventoryService>();
 
+builder.Services.AddDbContext<BattlegroundDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("BattlegroundConnectionString"), b => b.MigrationsAssembly("Battleground.Api")));
+
 builder.Services.AddHttpClient<IPokemonService, PokemonService>(client => {
     client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("PokemonApiBaseUrl"));
 });
 
-// TODO: Bætti þessu við, setti ContextFactory og setti inn ServiceLifetime sem scoped.
-//builder.Services.AddScoped<BattlegroundDbContext>();
-builder.Services.AddDbContext<BattlegroundDbContext>(options => 
-{
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("BattlegroundConnectionString"),
-        b => b.MigrationsAssembly("Battleground.Api")
-    );
-});
 
 builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddSystemTextJson()
@@ -41,6 +35,7 @@ builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddDataLoader());
 
 var app = builder.Build();
+
 
 app.UseGraphQLPlayground();
 app.UseGraphQL<ISchema>();
