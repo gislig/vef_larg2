@@ -15,29 +15,24 @@ namespace Battleground.Api.Schema.Queries
         //private readonly BattlegroundDbContext _dbContext;
         
         //private readonly IPlayerService _playerService;
-        private readonly IPokemonService _pokemonService;
+        // private readonly IPokemonService _pokemonService;
         //private readonly IBattleService _battleService;
         //private readonly IInventoryService _inventoryService;
 
         public BattlegroundQuery(IPokemonService pokemonService)
         {
+            // Við sækjum servicið svona 
+            Field<ListGraphType<PlayerType>>("allPlayers")
+            .ResolveAsync(async context => await context.RequestServices.GetRequiredService<IPlayerService>().AllPlayers());
+            
             //_dbContext = dbContext;
             //_playerService = playerService;
-            _pokemonService = pokemonService;
+            // _pokemonService = pokemonService;
+            
             //_battleService = battleService;
             //_inventoryService = inventoryService;
 
             // TODO: Hér setjum við inn queries fyrir Players
-            Field<ListGraphType<PlayerType>>("playersFromDB")
-                .ResolveAsync(async context =>
-                { 
-                    var playerContext = context.RequestServices
-                        .GetRequiredService<BattlegroundDbContext>();
-                    var players = playerContext.Players.ToListAsync();
-
-                    return players;
-                });
-            
             /*
             // TODO: Ef það er bætt inn öðru db query þá fer allt í köku
             Field<ListGraphType<BattleType>>("battlesFromDB")
@@ -60,20 +55,20 @@ namespace Battleground.Api.Schema.Queries
             });
             */
             
-            Field<ListGraphType<PokemonType>>("allPokemons")
-            .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
+            // Field<ListGraphType<PokemonType>>("allPokemons")
+            // .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
 
-            Field<PokemonType>("pokemon")
-            .Argument<StringGraphType>("name")
-            .ResolveAsync(async context => {
-            var name = context.GetArgument<string>("name");
-            return await _pokemonService.GetPokemonByName(name);
+            // Field<PokemonType>("pokemon")
+            // .Argument<StringGraphType>("name")
+            // .ResolveAsync(async context => {
+            // var name = context.GetArgument<string>("name");
+            // return await _pokemonService.GetPokemonByName(name);
             
-            });
+            // });
 
 
-            Field<ListGraphType<PlayerType>>("allPlayers")
-            .Resolve(context => _playerService.AllPlayers());
+            // Field<ListGraphType<PlayerType>>("allPlayers")
+            // .Resolve(context => _playerService.AllPlayers());
             
             // TODO: allBattles(status: BattleStatus): [BattleType!]! -> status:BattleStatus vantar!
             // Field<NonNullGraphType<ListGraphType<NonNullGraphType<BattleType>>>>
