@@ -61,7 +61,20 @@ namespace Battleground.Api.Schema.Mutations
                     return inventoryResults;
                 });
             
-            // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific player and returns either true or an error if something happened
+            // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific
+            // player and returns either true or an error if something
+            // happened
+            Field<BooleanGraphType>("removePokemonFromInventory")
+                .Argument<NonNullGraphType<InventoryInputType>>("inputInventory")
+                .Resolve(context => {
+                    InventoryInputModel inventory = context.GetArgument<InventoryInputModel>("inputInventory");
+                    // use battleService to create a player
+                    var inventoryResults = inventoryService.Value.RemovePokemonFromPlayer(inventory);
+                    // convert playerResults to PlayerType
+                    
+                    // throw InventoryException IF false returns else return inventoryResults
+                    return inventoryResults;
+                });
         }        
     }
 }
