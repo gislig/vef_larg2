@@ -34,18 +34,27 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type
-            Field<PlayerDto>("addPlayer")
                 .Argument<NonNullGraphType<PlayerInputType>>("inputPlayer")
                 .Resolve(context => {
                     PlayerInputModel player = context.GetArgument<PlayerInputModel>("inputPlayer");
                     
                     // use battleService to create a player
                     var playerResults = playerService.Value.CreatePlayer(player);
-
+                    // convert playerResults to PlayerType
                     return playerResults;
                 });
             
-            // TODO : addPokemonToInventory - Add a pokémon to an inventory of a specific player and returns either true or an error if something happened. A player can only have one of each type - therefore no duplicates allowed in the inventory
+            // TODO : addPokemonToInventory - Add a pokémon to an
+            // inventory of a specific player and returns either
+            // true or an error if something happened.
+            // A player can only have one of each type -
+            // therefore no duplicates allowed in the inventory
+            Field<BooleanGraphType>("addPokemonToInventory")
+                .Argument<NonNullGraphType<InventoryInputType>>("playerId")
+                .Resolve(context => {
+                    return null;
+                });
+            
             // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific player and returns either true or an error if something happened
         }        
     }
