@@ -1,4 +1,6 @@
-﻿using Battleground.Services.Interfaces;
+﻿using Battleground.Models.Dtos;
+using Battleground.Models.InputModels;
+using Battleground.Services.Interfaces;
 using Battleground.Repositories.Entities;
 using Battleground.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -29,11 +31,31 @@ public class BattleService : IBattleService
     }
     
     // Create a new battle
-    public async Task<Battle> CreateBattle(Battle battle)
+    public async Task<BattleDto> CreateBattle(BattleInputModel battle)
     {
-        _dbContext.Battles.Add(battle);
-        await _dbContext.SaveChangesAsync();
-        return battle;
+        foreach (var player in battle.Players)
+        {
+            Console.WriteLine("player is :", player);
+        }
+
+        foreach (var pokemon in battle.Pokemons)
+        {
+            Console.WriteLine("pokemon is :", pokemon);
+        }
+
+        Battle bat = new Battle()
+        {
+            Id = 1,
+            WinnerId = 1,
+            StatusId = 1
+        };
+
+        return new BattleDto();
+
+        //throw new NotImplementedException();
+        //_dbContext.Battles.Add(battle);
+        //await _dbContext.SaveChangesAsync();
+        //return battle;
     }
     
     // Update a battle
