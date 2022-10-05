@@ -8,7 +8,7 @@ namespace Battleground.Services.Interfaces;
 
 public interface IBattleService
 {
-    Battle CreateBattle(Battle battle);
+    Battle CreateBattle(BattleInputModel battle);
     Battle UpdateBattle(Battle battle);
     Battle DeleteBattle(Battle battle);
     IEnumerable<Attack> GetAllAttacks();
