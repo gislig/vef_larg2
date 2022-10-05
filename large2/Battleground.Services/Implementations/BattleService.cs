@@ -31,11 +31,14 @@ public class BattleService : IBattleService
     }
     
     // Create a new battle
-    public Battle CreateBattle(Battle battle)
+    public Battle CreateBattle(BattleInputModel battle)
     {
+        /*
         _dbContext.Battles.Add(battle);
         _dbContext.SaveChanges();
         return battle;
+        */
+        return new Battle();
     }
     
     // Update a battle
