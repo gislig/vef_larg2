@@ -11,14 +11,7 @@ namespace Battleground.Api.Schema.Mutations
     {
         public BattlegroundMutation(IDefer<IBattleService> battleService, IDefer<IPlayerService> playerService, IDefer<IInventoryService> inventoryService)
         {
-            Field<BooleanGraphType>("removePlayer")
-                .Argument<NonNullGraphType<IntGraphType>>("id")
-                .Resolve(context => {
-                    return null;
-                });
-            
             // TODO : addBattle - Create a battle between two players pokémons and returns the newly created battle
-            
             Field<NonNullGraphType<BattleType>>("addBattle")
                 .Argument<NonNullGraphType<BattleInputType>>("inputBattle")
                 .Resolve(context => {
@@ -29,7 +22,6 @@ namespace Battleground.Api.Schema.Mutations
 
                     return battleResults;
                 });
-            
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type
@@ -74,6 +66,19 @@ namespace Battleground.Api.Schema.Mutations
                     
                     // throw InventoryException IF false returns else return inventoryResults
                     return inventoryResults;
+                });
+            
+            // TODO : removePlayer
+            Field<BooleanGraphType>("removePlayer")
+                .Argument<NonNullGraphType<IntGraphType>>("id")
+                .Resolve(context => {
+                    var player = context.GetArgument<int>("id");
+                    // use battleService to create a player
+                    var playerResults = playerService.Value.RemovePlayer(player);
+                    // convert playerResults to PlayerType
+                    
+                    // throw InventoryException IF false returns else return inventoryResults
+                    return playerResults;
                 });
         }        
     }

@@ -12,5 +12,5 @@ public interface IPlayerService
     IEnumerable<PlayerDto?> AllPlayers();
     PlayerDto? CreatePlayer(PlayerInputModel player);
     Player? UpdatePlayer(Player player);
-    Player? DeletePlayer(int id);
+    bool RemovePlayer(int id);
 }
