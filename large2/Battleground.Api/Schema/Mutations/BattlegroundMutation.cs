@@ -33,14 +33,14 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type
-            Field<BooleanGraphType>("addPlayer")
+            Field<NonNullGraphType<PlayerType>>("addPlayer")
                 .Argument<NonNullGraphType<PlayerInputType>>("inputPlayer")
                 .Resolve(context => {
                     PlayerInputModel player = context.GetArgument<PlayerInputModel>("inputPlayer");
                     
                     // use battleService to create a player
                     var playerResults = playerService.Value.CreatePlayer(player);
-
+                    // convert playerResults to PlayerType
                     return playerResults;
                 });
             
