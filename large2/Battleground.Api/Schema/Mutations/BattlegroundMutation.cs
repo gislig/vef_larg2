@@ -1,9 +1,6 @@
 using Battleground.Api.Schema.InputTypes;
 using Battleground.Api.Schema.Types;
-using Battleground.Models.Dtos;
 using Battleground.Models.InputModels;
-using Battleground.Repositories.Entities;
-using Battleground.Services.Implementations;
 using Battleground.Services.Interfaces;
 using GraphQL;
 using GraphQL.Types;

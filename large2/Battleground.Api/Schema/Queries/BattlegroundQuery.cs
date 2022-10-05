@@ -12,6 +12,10 @@ namespace Battleground.Api.Schema.Queries
 {
     public class BattlegroundQuery : ObjectGraphType
     {
+        private readonly IPokemonService _pokemonService;
+        public BattlegroundQuery(IPokemonService pokemonService, IDefer<IPlayerService> playerService, IDefer<IBattleService> battleService)
+        {
+            _pokemonService = pokemonService;
 
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
@@ -36,7 +40,6 @@ namespace Battleground.Api.Schema.Queries
             // var id = context.GetArgument<int>("id");
             // return null;
             // });
-            */
 
             // Field<PlayerType>("player")
             // .Argument<IntGraphType>("id")
