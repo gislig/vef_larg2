@@ -9,7 +9,7 @@ namespace Battleground.Api.Schema.Mutations
 {
     public class BattlegroundMutation : ObjectGraphType
     {
-        public BattlegroundMutation(IDefer<IBattleService> battleService)
+        public BattlegroundMutation(IDefer<IBattleService> battleService, IDefer<IPlayerService> playerService)
         {
             // Field<BooleanGraphType>("removePlayer")
             //     .Argument<NonNullGraphType<IntGraphType>>("id")
@@ -33,7 +33,17 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type
+            Field<BooleanGraphType>("addPlayer")
+                .Argument<NonNullGraphType<PlayerInputType>>("inputPlayer")
+                .Resolve(context => {
+                    PlayerInputModel player = context.GetArgument<PlayerInputModel>("inputPlayer");
+                    
+                    // use battleService to create a player
+                    var playerResults = playerService.Value.CreatePlayer(player);
 
+                    return playerResults;
+                });
+            
             // TODO : addPokemonToInventory - Add a pokémon to an inventory of a specific player and returns either true or an error if something happened. A player can only have one of each type - therefore no duplicates allowed in the inventory
             // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific player and returns either true or an error if something happened
         }        

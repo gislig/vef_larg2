@@ -2,4 +2,5 @@
 
 public class PlayerInputModel
 {
+    public string Name { get; set; }
 }

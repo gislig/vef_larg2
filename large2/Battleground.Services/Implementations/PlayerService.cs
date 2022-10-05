@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Battleground.Services.Interfaces;
 using Battleground.Repositories;
 using Battleground.Models.Dtos;
+using Battleground.Models.InputModels;
 
 namespace Battleground.Services.Implementations;
 
@@ -29,11 +30,25 @@ public class PlayerService : IPlayerService
     }
 
     // Create a new player
-    public Player? CreatePlayer(Player player)
+    public PlayerDto? CreatePlayer(PlayerInputModel player)
     {
-        _dbContext.Players.Add(player);
+        Player newPlayer = new Player()
+        {
+            Name = player.Name,
+            Deleted = false
+        };
+        
+        _dbContext.Players.Add(newPlayer);
         _dbContext.SaveChanges();
-        return player;
+        
+        PlayerDto playerDto = new PlayerDto()
+        {
+            Id = newPlayer.Id,
+            Name = newPlayer.Name,
+            Deleted = newPlayer.Deleted
+        };
+        
+        return playerDto;
     }
 
     // Update Player
