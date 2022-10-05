@@ -1,4 +1,3 @@
-﻿
 using Battleground.Models.Dtos;
 using Battleground.Models.InputModels;
 using Battleground.Services.Interfaces;
@@ -9,11 +8,9 @@ namespace Battleground.Services.Interfaces;
 
 public interface IBattleService
 {
-    Task<BattleDto> CreateBattle(BattleInputModel battle);
-    Task<Battle> UpdateBattle(Battle battle);
-    Task<Battle> DeleteBattle(Battle battle);
-    Task<IEnumerable<Attack>> GetAllAttacks();
-    Task<IEnumerable<Battle>> AllBattles();
-    Task<Attack?> GetAttackAsync(int id);
-
+    Battle CreateBattle(Battle battle);
+    Battle UpdateBattle(Battle battle);
+    Battle DeleteBattle(Battle battle);
+    IEnumerable<Attack> GetAllAttacks();
+    Attack? GetAttackById(int id);
 }

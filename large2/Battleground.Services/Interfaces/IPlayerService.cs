@@ -7,9 +7,9 @@ namespace Battleground.Services.Interfaces;
 
 public interface IPlayerService
 {
-    Task<Player?> GetPlayerById(int id);
-    Task<IEnumerable<Player?>> AllPlayers();
-    Task<Player?> CreatePlayer(Player player);
-    Task<Player?> UpdatePlayer(Player player);
-    Task<Player?> DeletePlayer(int id);
+    Player? GetPlayerById(int id);
+    IEnumerable<Player?> AllPlayers();
+    Player? CreatePlayer(Player player);
+    Player? UpdatePlayer(Player player);
+    Player? DeletePlayer(int id);
 }

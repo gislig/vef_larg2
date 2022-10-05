@@ -13,8 +13,8 @@ public class BattlegroundSchema : GraphQL.Types.Schema
         Query = provider.GetRequiredService<BattlegroundQuery>();
         Mutation = provider.GetRequiredService<BattlegroundMutation>();
 
-        RegisterType(typeof(PokemonType));
-        RegisterType(typeof(PlayerType));
+        // RegisterType(typeof(PokemonType));
+        // RegisterType(typeof(PlayerType));
         
         // RegisterType(typeof(BattleType)); //something wrong with battletype schema
         // RegisterType(typeof(AttackType)); //Something Wrong with attacktype schema

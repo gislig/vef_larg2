@@ -4,10 +4,10 @@ namespace Battleground.Services.Interfaces;
 
 public interface IInventoryService
 {
-    Task RemovePokemonFromPlayer(int playerId, string pokemonIdentifier);
-    Task AddPokemonToPlayer(int playerId, string pokemonIdentifier);
-    Task<List<PlayerInventory>> GetInventoryItemsByPlayerIdAndItemId(int playerId, string pokemonIdentifier);
-    Task<List<PlayerInventory>> GetInventoryItemsByItemId(string pokemonIdentifier);
-    Task<List<PlayerInventory>> GetInventoryItemsByPlayerId(int playerId);
-    Task<List<PlayerInventory>> GetInventoryItems();
+    bool RemovePokemonFromPlayer(int playerId, string pokemonIdentifier);
+    bool AddPokemonToPlayer(int playerId, string pokemonIdentifier);
+    // IEnumerable<PlayerInventory> GetInventoryItemsByPlayerIdAndItemId(int playerId, string pokemonIdentifier);
+    IEnumerable<PlayerInventory> GetInventoryItemsByItemId(string pokemonIdentifier);
+    IEnumerable<PlayerInventory> GetInventoryItemsByPlayerId(int playerId);
+    IEnumerable<PlayerInventory> GetInventoryItems();
 }

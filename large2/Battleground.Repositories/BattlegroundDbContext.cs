@@ -9,6 +9,7 @@ namespace Battleground.Repositories
      */
     public class BattlegroundDbContext : DbContext
     {
+        
         public BattlegroundDbContext(DbContextOptions<BattlegroundDbContext> options) : base(options) {}
         
         public DbSet<Attack> Attacks { get; set; }
