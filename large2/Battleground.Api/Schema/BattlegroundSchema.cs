@@ -11,7 +11,7 @@ public class BattlegroundSchema : GraphQL.Types.Schema
         : base(provider)
     {
         Query = provider.GetRequiredService<BattlegroundQuery>();
-        // Mutation = provider.GetRequiredService<BattlegroundMutation>();
+        Mutation = provider.GetRequiredService<BattlegroundMutation>();
 
         // RegisterType(typeof(PokemonType));
         // RegisterType(typeof(PlayerType));

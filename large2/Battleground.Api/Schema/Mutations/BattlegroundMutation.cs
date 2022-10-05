@@ -2,6 +2,7 @@ using Battleground.Api.Schema.InputTypes;
 using Battleground.Api.Schema.Types;
 using Battleground.Models.InputModels;
 using Battleground.Services.Interfaces;
+using Battleground.Models.Dtos:
 using GraphQL;
 using GraphQL.Types;
 
@@ -33,7 +34,7 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type
-            Field<BooleanGraphType>("addPlayer")
+            Field<PlayerDto>("addPlayer")
                 .Argument<NonNullGraphType<PlayerInputType>>("inputPlayer")
                 .Resolve(context => {
                     PlayerInputModel player = context.GetArgument<PlayerInputModel>("inputPlayer");

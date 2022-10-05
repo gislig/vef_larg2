@@ -38,7 +38,7 @@ namespace Battleground.Api.Schema.Queries
             .Argument<IntGraphType>("id")
             .Resolve( context => {
             var id = context.GetArgument<int>("id");
-            return battleService.Value.GetAttackById(1);
+            return battleService.Value.GetBattleById(1);
             });
 
             // Field<PlayerType>("player")

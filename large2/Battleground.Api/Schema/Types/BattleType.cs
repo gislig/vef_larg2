@@ -8,7 +8,9 @@ namespace Battleground.Api.Schema.Types
     {
         public BattleType()
         {
-            Field(x => x.Id).Description("The id of the Battle.");
+            Field(x => x.Id).Description("The id of the Battle.");  
+            Field(x => x.WinnerId).Description("The Id of the winner for this battle");
+            Field(x => x.StatusId).Description("The Status of the battle");
             // Field(x => x.Status).Description("Status of the battle.");
 
             // TODO: Solve fields below.
