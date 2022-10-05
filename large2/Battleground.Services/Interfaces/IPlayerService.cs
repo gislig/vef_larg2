@@ -8,8 +8,8 @@ namespace Battleground.Services.Interfaces;
 
 public interface IPlayerService
 {
-    Player? GetPlayerById(int id);
-    IEnumerable<Player?> AllPlayers();
+    PlayerDto? GetPlayerById(int id);
+    IEnumerable<PlayerDto?> AllPlayers();
     PlayerDto? CreatePlayer(PlayerInputModel player);
     Player? UpdatePlayer(Player player);
     Player? DeletePlayer(int id);

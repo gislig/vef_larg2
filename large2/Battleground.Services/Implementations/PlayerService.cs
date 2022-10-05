@@ -18,16 +18,28 @@ public class PlayerService : IPlayerService
     }
 
     // (5%) player - Should return a specific player by id
-    public Player? GetPlayerById(int id)
+    public PlayerDto? GetPlayerById(int id)
     {
-        return _dbContext.Players.Find(id);
+        var player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+        if(player != null)
+            return new PlayerDto {
+                Id = player.Id,
+                Name = player.Name,
+                Deleted = player.Deleted
+            };
+        return null;
     }
 
     // (5%) allPlayers - Should return a collection of all players
-    public IEnumerable<Player?> AllPlayers()
-    {
-        return _dbContext.Players.ToList();
-    }
+    public IEnumerable<PlayerDto?> AllPlayers()
+    {   
+        return _dbContext.Players.Select(p => new PlayerDto {
+            Id = p.Id,
+            Name = p.Name,
+            Deleted = p.Deleted
+        });  
+    }   
+    
 
     // Create a new player
     public PlayerDto? CreatePlayer(PlayerInputModel player)

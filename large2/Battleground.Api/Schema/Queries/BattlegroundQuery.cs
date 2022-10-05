@@ -25,6 +25,7 @@ namespace Battleground.Api.Schema.Queries
 
             Field<ListGraphType<PlayerType>>("allPlayers")
             .Resolve(context => playerService.Value.AllPlayers());
+            
 
             Field<PokemonType>("pokemon")
             .Argument<StringGraphType>("name")
@@ -41,12 +42,12 @@ namespace Battleground.Api.Schema.Queries
             return battleService.Value.GetBattleById(1);
             });
 
-            // Field<PlayerType>("player")
-            // .Argument<IntGraphType>("id")
-            // .Resolve(context => {
-            // var id = context.GetArgument<int>("id");
-            // return playerService.Value.GetPlayerById(id);
-            // });                 
+            Field<PlayerType>("player")
+            .Argument<IntGraphType>("id")
+            .Resolve(context => {
+            var id = context.GetArgument<int>("id");
+            return playerService.Value.GetPlayerById(id);
+            });                 
         }
     }
 }
