@@ -44,7 +44,17 @@ namespace Battleground.Api.Schema.Mutations
                     return playerResults;
                 });
             
-            // TODO : addPokemonToInventory - Add a pokémon to an inventory of a specific player and returns either true or an error if something happened. A player can only have one of each type - therefore no duplicates allowed in the inventory
+            // TODO : addPokemonToInventory - Add a pokémon to an
+            // inventory of a specific player and returns either
+            // true or an error if something happened.
+            // A player can only have one of each type -
+            // therefore no duplicates allowed in the inventory
+            Field<BooleanGraphType>("addPokemonToInventory")
+                .Argument<NonNullGraphType<InventoryInputType>>("playerId")
+                .Resolve(context => {
+                    return null;
+                });
+            
             // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific player and returns either true or an error if something happened
         }        
     }
