@@ -19,54 +19,56 @@ public class InventoryService : IInventoryService
     }
     
     // Get all items in inventory
-    public async Task<List<PlayerInventory>> GetInventoryItems()
+    public IEnumerable<PlayerInventory> GetInventoryItems()
     {
-        var inventoryItems = await _dbContext.PlayerInventories.ToListAsync();
+        var inventoryItems = _dbContext.PlayerInventories.ToList();
         
         return inventoryItems;
     }
     
     // Get all items in inventory by player id
-    public async Task<List<PlayerInventory>> GetInventoryItemsByPlayerId(int playerId)
+    public IEnumerable<PlayerInventory> GetInventoryItemsByPlayerId(int playerId)
     {
-        var inventoryItems = await _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId).ToListAsync();
+        var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId).ToList();
         
         return inventoryItems;
     }
     
     // Get all items in inventory by item id
-    public async Task<List<PlayerInventory>> GetInventoryItemsByItemId(string pokemonIdentifier)
+    public IEnumerable<PlayerInventory> GetInventoryItemsByItemId(string pokemonIdentifier)
     {
-        var inventoryItems = await _dbContext.PlayerInventories.Where(x => x.PokemonIdentifier == pokemonIdentifier).ToListAsync();
+        var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PokemonIdentifier == pokemonIdentifier).ToList();
         
         return inventoryItems;
     }
     
     // Get all items in inventory by player id and item id
-    public async Task<List<PlayerInventory>> GetInventoryItemsByPlayerIdAndItemId(int playerId, string pokemonIdentifier)
+    //TODO FIx
+    public PlayerInventory GetInventoryItemsByPlayerIdAndItemId(int playerId, string pokemonIdentifier)
     {
-        var inventoryItems = await _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId && x.PokemonIdentifier == pokemonIdentifier).ToListAsync();
+        // var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId && x.PokemonIdentifier == pokemonIdentifier).ToList();
         
-        return inventoryItems;
+        // return inventoryItems;
+        return null;
     }
     
     // Add pokemonIdentifier to playerID
-    public async Task AddPokemonToPlayer(int playerId, string pokemonIdentifier)
+    public bool AddPokemonToPlayer(int playerId, string pokemonIdentifier)
     {
-        var player = await _dbContext.Players.FirstOrDefaultAsync(x => x.Id == playerId);
+        var player = _dbContext.Players.FirstOrDefaultAsync(x => x.Id == playerId);
         
         if (player == null)
         {
             // TODO: Create PlayerNotFoundException
-            return;
+            return false;
         }
         
-        var pokemon = await _pokemonService.GetPokemonByName(pokemonIdentifier);
+        var pokemon = _pokemonService.GetPokemonByName(pokemonIdentifier);
         
         if (pokemon == null)
         {
             // TODO: Create PokemonNotFoundException
-            return;
+            return false;
         }
         
         var playerInventory = new PlayerInventory
@@ -75,21 +77,24 @@ public class InventoryService : IInventoryService
             PokemonIdentifier = pokemonIdentifier
         };
         
-        await _dbContext.PlayerInventories.AddAsync(playerInventory);
-        await _dbContext.SaveChangesAsync();
+        _dbContext.PlayerInventories.Add(playerInventory);
+        _dbContext.SaveChanges();
+        return true;
     }
     
     // Remove pokemonIdentifier from playerID
-    public async Task RemovePokemonFromPlayer(int playerId, string pokemonIdentifier)
+    public bool RemovePokemonFromPlayer(int playerId, string pokemonIdentifier)
     {
-        var playerInventory = await _dbContext.PlayerInventories.FirstOrDefaultAsync(x => x.PlayerId == playerId && x.PokemonIdentifier == pokemonIdentifier);
+        var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == playerId && x.PokemonIdentifier == pokemonIdentifier);
 
         if (playerInventory == null)
         {
+            return false;
             // TODO: Create PokemonNotFoundException
         }
         
         _dbContext.PlayerInventories.Remove(playerInventory);
-        await _dbContext.SaveChangesAsync();
+        _dbContext.SaveChanges();
+        return true;
     }
 }
