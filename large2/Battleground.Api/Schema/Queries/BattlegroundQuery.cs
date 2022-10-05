@@ -15,19 +15,22 @@ namespace Battleground.Api.Schema.Queries
         //private readonly BattlegroundDbContext _dbContext;
         
         //private readonly IPlayerService _playerService;
-        // private readonly IPokemonService _pokemonService;
+        private readonly IPokemonService _pokemonService;
         //private readonly IBattleService _battleService;
         //private readonly IInventoryService _inventoryService;
 
-        public BattlegroundQuery(IPokemonService pokemonService)
+        public BattlegroundQuery(IPokemonService pokemonService, IDefer<IPlayerService> playerService, IDefer<IBattleService> battleService)
         {
             // Við sækjum servicið svona 
             Field<ListGraphType<PlayerType>>("allPlayers")
-            .ResolveAsync(async context => await context.RequestServices.GetRequiredService<IPlayerService>().AllPlayers());
+                .Resolve(context => playerService.Value.AllPlayers());
+            
+            Field<ListGraphType<BattleType>>("allBattles")
+                .Resolve(context => battleService.Value.AllBattles());
             
             //_dbContext = dbContext;
             //_playerService = playerService;
-            // _pokemonService = pokemonService;
+            _pokemonService = pokemonService;
             
             //_battleService = battleService;
             //_inventoryService = inventoryService;
@@ -55,16 +58,15 @@ namespace Battleground.Api.Schema.Queries
             });
             */
             
-            // Field<ListGraphType<PokemonType>>("allPokemons")
-            // .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
+            Field<ListGraphType<PokemonType>>("allPokemons")
+            .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
 
-            // Field<PokemonType>("pokemon")
-            // .Argument<StringGraphType>("name")
-            // .ResolveAsync(async context => {
-            // var name = context.GetArgument<string>("name");
-            // return await _pokemonService.GetPokemonByName(name);
-            
-            // });
+            Field<PokemonType>("pokemon")
+            .Argument<StringGraphType>("name")
+            .ResolveAsync(async context => {
+            var name = context.GetArgument<string>("name");
+            return await _pokemonService.GetPokemonByName(name);
+            });
 
 
             // Field<ListGraphType<PlayerType>>("allPlayers")

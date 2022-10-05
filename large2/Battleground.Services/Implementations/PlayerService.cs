@@ -17,7 +17,6 @@ public class PlayerService : IPlayerService
     }
 
 
-    /*
     // (5%) player - Should return a specific player by id
     public async Task<Player?> GetPlayerById(int id)
     {
@@ -54,5 +53,4 @@ public class PlayerService : IPlayerService
         await _dbContext.SaveChangesAsync();
         return player;
     }
-    */
 }

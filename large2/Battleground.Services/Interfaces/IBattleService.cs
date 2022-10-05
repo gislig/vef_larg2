@@ -11,6 +11,7 @@ public interface IBattleService
     Task<Battle> UpdateBattle(Battle battle);
     Task<Battle> DeleteBattle(Battle battle);
     Task<IEnumerable<Attack>> GetAllAttacks();
+    Task<IEnumerable<Battle>> AllBattles();
     Task<Attack?> GetAttackAsync(int id);
 
 }
