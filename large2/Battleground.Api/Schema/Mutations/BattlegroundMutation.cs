@@ -9,7 +9,7 @@ namespace Battleground.Api.Schema.Mutations
 {
     public class BattlegroundMutation : ObjectGraphType
     {
-        public BattlegroundMutation(IDefer<IBattleService> battleService, IDefer<IPlayerService> playerService)
+        public BattlegroundMutation(IDefer<IBattleService> battleService, IDefer<IPlayerService> playerService, IDefer<IInventoryService> inventoryService)
         {
             Field<BooleanGraphType>("removePlayer")
                 .Argument<NonNullGraphType<IntGraphType>>("id")
@@ -50,9 +50,15 @@ namespace Battleground.Api.Schema.Mutations
             // A player can only have one of each type -
             // therefore no duplicates allowed in the inventory
             Field<BooleanGraphType>("addPokemonToInventory")
-                .Argument<NonNullGraphType<InventoryInputType>>("playerId")
+                .Argument<NonNullGraphType<InventoryInputType>>("inputInventory")
                 .Resolve(context => {
-                    return null;
+                    InventoryInputModel inventory = context.GetArgument<InventoryInputModel>("inputInventory");
+                    // use battleService to create a player
+                    var inventoryResults = inventoryService.Value.AddPokemonToPlayer(inventory);
+                    // convert playerResults to PlayerType
+                    
+                    // throw InventoryException IF false returns else return inventoryResults
+                    return inventoryResults;
                 });
             
             // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific player and returns either true or an error if something happened

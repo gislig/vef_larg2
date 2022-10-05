@@ -1,5 +1,6 @@
 ﻿using Battleground.Models.Dtos;
 using Battleground.Models.Exceptions;
+using Battleground.Models.InputModels;
 using Battleground.Repositories;
 using Battleground.Repositories.Entities;
 using Battleground.Services.Interfaces;
@@ -53,33 +54,39 @@ public class InventoryService : IInventoryService
     }
     
     // Add pokemonIdentifier to playerID
-    public bool AddPokemonToPlayer(int playerId, string pokemonIdentifier)
+    public bool AddPokemonToPlayer(InventoryInputModel inventoryInput)
     {
-        var player = _dbContext.Players.FirstOrDefaultAsync(x => x.Id == playerId);
+        // Check if the player already has the pokemon
+        var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier == inventoryInput.PokemonIdentifier);
         
-        if (player == null)
+        if (playerInventory != null)
         {
-            // TODO: Create PlayerNotFoundException
             return false;
         }
         
-        var pokemon = _pokemonService.GetPokemonByName(pokemonIdentifier);
-        
-        if (pokemon == null)
+        // Check if the pokemon exists in the on the web api
+        var pokemon = _pokemonService.GetPokemonByName(inventoryInput.PokemonIdentifier);
+        if(pokemon == null)
         {
-            // TODO: Create PokemonNotFoundException
             return false;
         }
         
-        var playerInventory = new PlayerInventory
+        // Add the pokemon to the player
+        var playerInventoryEntity = new PlayerInventory
         {
-            PlayerId = playerId,
-            PokemonIdentifier = pokemonIdentifier
+            PlayerId = inventoryInput.PlayerId,
+            PokemonIdentifier = inventoryInput.PokemonIdentifier,
+            AcquiredDate = DateTime.Now.ToUniversalTime()
         };
         
-        _dbContext.PlayerInventories.Add(playerInventory);
-        _dbContext.SaveChanges();
-        return true;
+        try{
+            _dbContext.PlayerInventories.Add(playerInventoryEntity);
+            _dbContext.SaveChanges();
+            return true;
+        }catch
+        {
+            return false;
+        }
     }
     
     // Remove pokemonIdentifier from playerID
