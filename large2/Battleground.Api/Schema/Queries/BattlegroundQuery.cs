@@ -2,6 +2,7 @@ using GraphQL;
 using Battleground.Api.Schema.Types;
 using Battleground.Repositories;
 using Battleground.Repositories.Entities;
+using Battleground.Services.Implementations;
 using Battleground.Services.Interfaces;
 
 using GraphQL.Types;

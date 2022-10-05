@@ -13,6 +13,7 @@ namespace Battleground.Api.Schema.Types
             // TODO: Solve fields below.
 
             // Field(x => x.).Description(""); // winner: PlayerType
+            /*
             Field<PlayerType>("winner")
                 .Resolve(context => {
                     return null;
@@ -35,6 +36,7 @@ namespace Battleground.Api.Schema.Types
                 .Resolve(context => {
                     return null;
                 });
+                */
         }
     }
 }

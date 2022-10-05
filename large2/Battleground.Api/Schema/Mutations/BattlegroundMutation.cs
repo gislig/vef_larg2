@@ -12,6 +12,12 @@ namespace Battleground.Api.Schema.Mutations
                 .Resolve(context => {
                     return null;
                 });
+            
+            // TODO : addBattle
+            // TODO : attack
+            // TODO : addPlayer
+            // TODO : addPokemonToInventory
+            // TODO : removePokemonFromInventory
         }        
     }
 }
