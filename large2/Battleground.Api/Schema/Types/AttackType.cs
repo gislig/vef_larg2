@@ -7,14 +7,15 @@ namespace Battleground.Api.Schema.Types
     {
         public AttackType()
         {
+            //TODO Need to rename fields
             Field(x => x.Damage).Description("");
             Field(x => x.CriticalHit).Description("");
             Field(x => x.Success).Description("");
             // TODO: Field -> attackedBy: PokemonType
-            Field<ObjectGraphType<PokemonType>>("attackedBy")
-                .Resolve(context => {
-                    return null;
-                });
+            // Field<ObjectGraphType<PokemonType>>("attackedBy")
+            //     .Resolve(context => {
+            //         return null;
+            //     });
         }
     }
 }
