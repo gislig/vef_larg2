@@ -1,5 +1,6 @@
 using Battleground.Models.Dtos;
 using GraphQL.Types;
+using Npgsql.PostgresTypes;
 
 namespace Battleground.Api.Schema.Types
 {

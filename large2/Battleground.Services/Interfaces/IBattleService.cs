@@ -1,4 +1,5 @@
-﻿
+using Battleground.Models.Dtos;
+using Battleground.Models.InputModels;
 using Battleground.Services.Interfaces;
 using Battleground.Repositories.Entities;
 using Battleground.Repositories;
@@ -12,5 +13,4 @@ public interface IBattleService
     Battle DeleteBattle(Battle battle);
     IEnumerable<Attack> GetAllAttacks();
     Attack? GetAttackById(int id);
-
 }

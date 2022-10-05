@@ -16,8 +16,6 @@ public class PlayerService : IPlayerService
         _dbContext = context;
     }
 
-
-    
     // (5%) player - Should return a specific player by id
     public Player? GetPlayerById(int id)
     {
@@ -54,5 +52,4 @@ public class PlayerService : IPlayerService
         _dbContext.SaveChangesAsync();
         return player;
     }
-    
 }

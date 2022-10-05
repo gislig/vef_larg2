@@ -34,6 +34,8 @@ builder.Services.AddGraphQL(qlBuilder => qlBuilder
     .AddGraphTypes()
     .AddDataLoader());
 
+builder.Services.AddLogging();
+
 var app = builder.Build();
 
 

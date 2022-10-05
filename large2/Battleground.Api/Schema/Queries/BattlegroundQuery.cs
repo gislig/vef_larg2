@@ -2,6 +2,7 @@ using GraphQL;
 using Battleground.Api.Schema.Types;
 using Battleground.Repositories;
 using Battleground.Repositories.Entities;
+using Battleground.Services.Implementations;
 using Battleground.Services.Interfaces;
 
 using GraphQL.Types;
@@ -11,16 +12,6 @@ namespace Battleground.Api.Schema.Queries
 {
     public class BattlegroundQuery : ObjectGraphType
     {
-        private readonly IPokemonService _pokemonService;
-
-        public BattlegroundQuery(
-            IPokemonService pokemonService,
-            IDefer<IPlayerService> playerService
-            // IDefer<IBattleService> battleService,
-            // IDefer<IInventoryService> inventoryServoce
-            )
-        {
-            _pokemonService = pokemonService;
 
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
@@ -45,18 +36,14 @@ namespace Battleground.Api.Schema.Queries
             // var id = context.GetArgument<int>("id");
             // return null;
             // });
+            */
 
             // Field<PlayerType>("player")
             // .Argument<IntGraphType>("id")
             // .Resolve(context => {
             // var id = context.GetArgument<int>("id");
             // return playerService.Value.GetPlayerById(id);
-            // });            
-        
-            
-        
-
-            
+            // });                 
         }
     }
 }
