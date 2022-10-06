@@ -19,9 +19,10 @@ namespace Battleground.Api.Schema.Mutations
                     
                     // use battleService to create a battle
                     var battleResults = battleService.Value.CreateBattle(battle);
-
+                    
                     return battleResults;
                 });
+            
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type

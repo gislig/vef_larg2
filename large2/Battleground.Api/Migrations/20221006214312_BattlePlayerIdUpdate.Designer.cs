@@ -3,6 +3,7 @@ using System;
 using Battleground.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Battleground.Api.Migrations
 {
     [DbContext(typeof(BattlegroundDbContext))]
-    partial class BattlegroundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221006214312_BattlePlayerIdUpdate")]
+    partial class BattlePlayerIdUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,9 +82,6 @@ namespace Battleground.Api.Migrations
                     b.Property<int>("BattlesId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PlayerInMatchId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.ToTable("BattlePlayers");
@@ -99,9 +98,8 @@ namespace Battleground.Api.Migrations
                     b.Property<int>("BattleId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("PokemonIdentifier")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("PokemonIdentifier")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -140,7 +138,12 @@ namespace Battleground.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("Player")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Player");
 
                     b.ToTable("Players");
                 });
@@ -166,6 +169,18 @@ namespace Battleground.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PlayerInventories");
+                });
+
+            modelBuilder.Entity("Battleground.Repositories.Entities.Player", b =>
+                {
+                    b.HasOne("Battleground.Repositories.Entities.BattlePlayer", null)
+                        .WithMany("PlayersInMatchId")
+                        .HasForeignKey("Player");
+                });
+
+            modelBuilder.Entity("Battleground.Repositories.Entities.BattlePlayer", b =>
+                {
+                    b.Navigation("PlayersInMatchId");
                 });
 #pragma warning restore 612, 618
         }

@@ -33,12 +33,118 @@ public class BattleService : IBattleService
     // Create a new battle
     public Battle CreateBattle(BattleInputModel battle)
     {
-        /*
-        _dbContext.Battles.Add(battle);
+        // If battle.Players count more than two then return null
+        if (battle.Players.Count() > 2 || battle.Players.Count() < 2)
+        {
+            Console.WriteLine("Battle must have two players");
+            return null;
+        }
+        
+        // If battle.Pokemons count more than two or less than two then return null
+        if (battle.Pokemons.Count() > 2 || battle.Pokemons.Count() < 2)
+        {
+            Console.WriteLine("Battle must have two pokemons");
+            return null;
+        }
+        
+        // get the first item in IEnumerable item of battle.Players
+        var player1 = _dbContext.Players.Find(battle.Players.First());
+        var player2 = _dbContext.Players.Find(battle.Players.Last());
+        
+        // If the player1 or player2 is not found then return null
+        if (player1 == null || player2 == null)
+        {
+            Console.WriteLine("Player not found");
+            return null;
+        }
+        
+        // get the first and second item in IEnumerable item of battle.Pokemons 
+        var rawPokemon1 = battle.Pokemons.First();
+        var rawPokemon2 = battle.Pokemons.Last();
+        
+        // Check if the player1 owns the pokemon1 and player2 owns the pokemon2 with the help of PlayerInventory
+        var player1OwnsPokemon1 = _dbContext
+            .PlayerInventories
+            .Any(x => x.PlayerId == player1.Id && x.PokemonIdentifier == rawPokemon1);
+        
+        var player2OwnsPokemon2 = _dbContext
+            .PlayerInventories
+            .Any(x => x.PlayerId == player2.Id && x.PokemonIdentifier == rawPokemon2);
+        
+        // If the player1 does not own the pokemon1 or player2 does not own the pokemon2 then return null
+        if (!player1OwnsPokemon1 || !player2OwnsPokemon2)
+        {
+            Console.WriteLine("Player does not own the pokemon");
+            return null;
+        }
+        
+        // Create new battlestatus
+        BattleStatus newBattleStatus = new BattleStatus()
+        {
+            Name = "NOT_STARTED"
+        };
+        
+        // Insert battleStatus to database
+        _dbContext.BattleStatuses.Add(newBattleStatus);
         _dbContext.SaveChanges();
-        return battle;
-        */
-        return new Battle();
+        // Get id of the newly created battleStatus
+        var battleStatusId = newBattleStatus.Id;
+        Console.WriteLine("The id of the battle is : " + battleStatusId);
+
+        // Create new Battle
+        Battle newBattle = new Battle
+        {
+            WinnerId = 0,
+            StatusId = battleStatusId
+        };
+        
+        // Insert battle to database
+        _dbContext.Battles.Add(newBattle);
+        // Get id of the battle
+        var battleId = newBattle.Id;
+        
+        BattlePlayer battlePlayer1 = new BattlePlayer
+        {
+            PlayerInMatchId = player1.Id,
+            BattlesId = battleId,
+        };
+
+        BattlePlayer battlePlayer2 = new BattlePlayer
+        {
+            PlayerInMatchId = player2.Id,
+            BattlesId = battleId,
+        };
+        
+        BattlePokemon battlePokemon1 = new BattlePokemon
+        {
+            PokemonIdentifier = rawPokemon1,
+            BattleId = battleId,
+        };
+        
+        BattlePokemon battlePokemon2 = new BattlePokemon
+        {
+            PokemonIdentifier = rawPokemon2,
+            BattleId = battleId,
+        };        
+        
+        // Insert battlePlayer1 and battlePlayer2 to database
+        _dbContext.BattlePlayers.Add(battlePlayer1);
+        _dbContext.BattlePlayers.Add(battlePlayer2);
+        // Insert battlePokemon1 and battlePokemon2 to database
+        _dbContext.BattlePokemons.Add(battlePokemon1);
+        _dbContext.BattlePokemons.Add(battlePokemon2);
+        
+        try{
+            // Save changes to database
+            _dbContext.SaveChanges();
+            return newBattle;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
     
     // Update a battle

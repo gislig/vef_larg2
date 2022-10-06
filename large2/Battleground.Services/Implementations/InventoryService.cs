@@ -75,7 +75,7 @@ public class InventoryService : IInventoryService
         var playerInventoryEntity = new PlayerInventory
         {
             PlayerId = inventoryInput.PlayerId,
-            PokemonIdentifier = inventoryInput.PokemonIdentifier,
+            PokemonIdentifier = inventoryInput.PokemonIdentifier.ToLower(),
             AcquiredDate = DateTime.Now.ToUniversalTime()
         };
         

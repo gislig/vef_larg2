@@ -9,5 +9,5 @@ public class BattlePlayer
     public int BattlesId { get; set; }
     
     [ForeignKey("Player")]
-    public int PlayersInMatchId { get; set; }
+    public int PlayerInMatchId { get; set; }
 }
