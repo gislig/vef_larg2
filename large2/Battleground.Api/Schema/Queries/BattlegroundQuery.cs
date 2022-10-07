@@ -13,7 +13,7 @@ namespace Battleground.Api.Schema.Queries
     public class BattlegroundQuery : ObjectGraphType
     {
         private readonly IPokemonService _pokemonService;
-        public BattlegroundQuery(IPokemonService pokemonService, IDefer<IPlayerService> playerService, IDefer<IBattleService> battleService)
+        public BattlegroundQuery(IPokemonService pokemonService, IDefer<IPlayerService> playerService, IDefer<IBattleService> battleService, IDefer<IInventoryService> inventoryService)
         {
             _pokemonService = pokemonService;
 
@@ -47,6 +47,8 @@ namespace Battleground.Api.Schema.Queries
             .Resolve(context => {
             var id = context.GetArgument<int>("id");
             return playerService.Value.GetPlayerById(id);
+            
+            
             });                 
         }
     }

@@ -5,4 +5,6 @@ public class Pokemon
         public int healthPoints { get; set; }
         public int baseAttack { get; set; }
         public int weight { get; set; }
+        
+        
     }

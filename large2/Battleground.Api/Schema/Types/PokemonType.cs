@@ -1,8 +1,8 @@
 using GraphQL.Types;
-using Battleground.Models.Dtos;
+using Battleground.Repositories.Entities;
 namespace Battleground.Api.Schema.Types;
 
-public sealed class PokemonType : ObjectGraphType<PokemonDto>
+public sealed class PokemonType : ObjectGraphType<Pokemon>
 {
     public PokemonType()
     {
@@ -10,6 +10,9 @@ public sealed class PokemonType : ObjectGraphType<PokemonDto>
         Field(x => x.baseAttack).Description("The base attack of the pokemon");
         Field(x => x.healthPoints).Description("The health points of the pokemon");
         Field(x => x.weight).Description("The weight of the pokemon");
+        
+        
+        
         // Field(x => x.owners).Description("Owners that own this pokemon");
         //TODO NEED TO FIX 
         // Field<PlayerType>("player")

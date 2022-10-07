@@ -32,12 +32,12 @@ public class PlayerService : IPlayerService
 
     // (5%) allPlayers - Should return a collection of all players
     public IEnumerable<PlayerDto?> AllPlayers()
-    {   
+    {  
         return _dbContext.Players.Select(p => new PlayerDto {
             Id = p.Id,
             Name = p.Name,
             Deleted = p.Deleted
-        });  
+        });
     }   
     
 
