@@ -9,4 +9,5 @@ public class Battle
     
     [ForeignKey("BattleStatus")]
     public int StatusId { get; set; }
+    public BattleStatus BattleStatus { get; set; }
 }

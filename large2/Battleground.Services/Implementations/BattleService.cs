@@ -33,6 +33,7 @@ public class BattleService : IBattleService
     // Create a new battle
     public Battle CreateBattle(BattleInputModel battle)
     {
+
         // If battle.Players count more than two then return null
         if (battle.Players.Count() > 2 || battle.Players.Count() < 2)
         {
@@ -51,10 +52,18 @@ public class BattleService : IBattleService
         var player1 = _dbContext.Players.Find(battle.Players.First());
         var player2 = _dbContext.Players.Find(battle.Players.Last());
         
+        
         // If the player1 or player2 is not found then return null
         if (player1 == null || player2 == null)
         {
             Console.WriteLine("Player not found");
+            return null;
+        }
+        
+        // Check if players are disabled if so then return null
+        if (player1.Deleted == true || player2.Deleted == true)
+        {
+            Console.WriteLine("Player has been deleted");
             return null;
         }
         
@@ -71,13 +80,29 @@ public class BattleService : IBattleService
             .PlayerInventories
             .Any(x => x.PlayerId == player2.Id && x.PokemonIdentifier == rawPokemon2);
         
+
+        var playersInBattle = _dbContext
+            .BattlePlayers
+            .Include(x => x.Battle)
+            .ThenInclude(x => x.BattleStatus)
+            .Where(x => x.PlayerInMatchId == player2.Id || x.PlayerInMatchId == player1.Id)
+            .Where(x => x.Battle.BattleStatus.Name == "NOT_STARTED" 
+                        || x.Battle.BattleStatus.Name == "STARTED")
+            .ToList();
+
+        if(playersInBattle.Count() == 2)
+        {
+            Console.WriteLine($"Player {playersInBattle[0].Player.Name} is already in a battle");
+            Console.WriteLine($"Player {playersInBattle[1].Player.Name} is already in a battle");
+            return null;
+        }
+        
         // If the player1 does not own the pokemon1 or player2 does not own the pokemon2 then return null
         if (!player1OwnsPokemon1 || !player2OwnsPokemon2)
         {
             Console.WriteLine("Player does not own the pokemon");
             return null;
         }
-        
         // Create new battlestatus
         BattleStatus newBattleStatus = new BattleStatus()
         {
@@ -90,16 +115,25 @@ public class BattleService : IBattleService
         // Get id of the newly created battleStatus
         var battleStatusId = newBattleStatus.Id;
         Console.WriteLine("The id of the battle is : " + battleStatusId);
-
         // Create new Battle
         Battle newBattle = new Battle
         {
             WinnerId = 0,
             StatusId = battleStatusId
         };
-        
-        // Insert battle to database
-        _dbContext.Battles.Add(newBattle);
+
+        try
+        {
+            // Insert battle to database
+            _dbContext.Battles.Add(newBattle);
+            _dbContext.SaveChanges();
+        }
+        catch
+        {
+            Console.WriteLine("Could not create battle");
+            return null;
+        }
+
         // Get id of the battle
         var battleId = newBattle.Id;
         
