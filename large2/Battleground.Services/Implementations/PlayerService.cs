@@ -66,17 +66,23 @@ public class PlayerService : IPlayerService
     // Update Player
     public Player? UpdatePlayer(Player player)
     {
+        
         _dbContext.Players.Update(player);
         _dbContext.SaveChanges();
         return player;
     }
 
     // Delete Player
-    public Player? DeletePlayer(int id)
+    public bool RemovePlayer(int id)
     {
-        var player = _dbContext.Players.Find(id);
-        _dbContext.Players.Remove(player);
-        _dbContext.SaveChangesAsync();
-        return player;
+        var playerToUpdate = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+        if(playerToUpdate != null)
+        {
+            playerToUpdate.Deleted = true;
+            _dbContext.Players.Update(playerToUpdate);
+            _dbContext.SaveChanges();
+            return true;
+        }
+        return false;
     }
 }

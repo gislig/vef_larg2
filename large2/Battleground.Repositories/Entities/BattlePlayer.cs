@@ -7,7 +7,9 @@ public class BattlePlayer
     
     [ForeignKey("Battle")]
     public int BattlesId { get; set; }
+    public Battle Battle { get; set; }
     
     [ForeignKey("Player")]
-    public int PlayersInMatchId { get; set; }
+    public int PlayerInMatchId { get; set; }
+    public Player Player { get; set; }
 }

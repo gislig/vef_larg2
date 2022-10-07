@@ -57,7 +57,7 @@ public class InventoryService : IInventoryService
     public bool AddPokemonToPlayer(InventoryInputModel inventoryInput)
     {
         // Check if the player already has the pokemon
-        var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier == inventoryInput.PokemonIdentifier);
+        var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
         
         if (playerInventory != null)
         {
@@ -75,7 +75,7 @@ public class InventoryService : IInventoryService
         var playerInventoryEntity = new PlayerInventory
         {
             PlayerId = inventoryInput.PlayerId,
-            PokemonIdentifier = inventoryInput.PokemonIdentifier,
+            PokemonIdentifier = inventoryInput.PokemonIdentifier.ToLower(),
             AcquiredDate = DateTime.Now.ToUniversalTime()
         };
         
@@ -90,18 +90,22 @@ public class InventoryService : IInventoryService
     }
     
     // Remove pokemonIdentifier from playerID
-    public bool RemovePokemonFromPlayer(int playerId, string pokemonIdentifier)
+    public bool RemovePokemonFromPlayer(InventoryInputModel inventoryInput)
     {
-        var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == playerId && x.PokemonIdentifier == pokemonIdentifier);
-
-        if (playerInventory == null)
+        // Check if the player exists and has the pokemon
+        var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
+        if(playerInventory == null)
         {
             return false;
-            // TODO: Create PokemonNotFoundException
         }
         
-        _dbContext.PlayerInventories.Remove(playerInventory);
-        _dbContext.SaveChanges();
-        return true;
+        // Remove the pokemon from the player
+        try{
+            _dbContext.PlayerInventories.Remove(playerInventory);
+            _dbContext.SaveChanges();
+            return true;
+        }catch{
+            return false;
+        }
     }
 }

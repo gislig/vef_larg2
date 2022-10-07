@@ -5,9 +5,9 @@ public class Battle
     [Key]
     public int Id { get; set; }
     
-    [Required]
-    public int WinnerId { get; set; } // TODO: Hvað er þetta?
+    public int WinnerId { get; set; }
     
     [ForeignKey("BattleStatus")]
     public int StatusId { get; set; }
+    public BattleStatus BattleStatus { get; set; }
 }

@@ -11,14 +11,7 @@ namespace Battleground.Api.Schema.Mutations
     {
         public BattlegroundMutation(IDefer<IBattleService> battleService, IDefer<IPlayerService> playerService, IDefer<IInventoryService> inventoryService)
         {
-            Field<BooleanGraphType>("removePlayer")
-                .Argument<NonNullGraphType<IntGraphType>>("id")
-                .Resolve(context => {
-                    return null;
-                });
-            
             // TODO : addBattle - Create a battle between two players pokémons and returns the newly created battle
-            
             Field<NonNullGraphType<BattleType>>("addBattle")
                 .Argument<NonNullGraphType<BattleInputType>>("inputBattle")
                 .Resolve(context => {
@@ -26,7 +19,7 @@ namespace Battleground.Api.Schema.Mutations
                     
                     // use battleService to create a battle
                     var battleResults = battleService.Value.CreateBattle(battle);
-
+                    
                     return battleResults;
                 });
             
@@ -61,7 +54,33 @@ namespace Battleground.Api.Schema.Mutations
                     return inventoryResults;
                 });
             
-            // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific player and returns either true or an error if something happened
+            // TODO : removePokemonFromInventory - Removes a pokémon from an inventory of a specific
+            // player and returns either true or an error if something
+            // happened
+            Field<BooleanGraphType>("removePokemonFromInventory")
+                .Argument<NonNullGraphType<InventoryInputType>>("inputInventory")
+                .Resolve(context => {
+                    InventoryInputModel inventory = context.GetArgument<InventoryInputModel>("inputInventory");
+                    // use battleService to create a player
+                    var inventoryResults = inventoryService.Value.RemovePokemonFromPlayer(inventory);
+                    // convert playerResults to PlayerType
+                    
+                    // throw InventoryException IF false returns else return inventoryResults
+                    return inventoryResults;
+                });
+            
+            // TODO : removePlayer
+            Field<BooleanGraphType>("removePlayer")
+                .Argument<NonNullGraphType<IntGraphType>>("id")
+                .Resolve(context => {
+                    var player = context.GetArgument<int>("id");
+                    // use battleService to create a player
+                    var playerResults = playerService.Value.RemovePlayer(player);
+                    // convert playerResults to PlayerType
+                    
+                    // throw InventoryException IF false returns else return inventoryResults
+                    return playerResults;
+                });
         }        
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Battleground.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Battleground.Api.Migrations
 {
     [DbContext(typeof(BattlegroundDbContext))]
-    partial class BattlegroundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221006215337_BattlePlayerIdAgain")]
+    partial class BattlePlayerIdAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,8 +49,6 @@ namespace Battleground.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BattlePokemonId");
-
                     b.ToTable("Attacks");
                 });
 
@@ -67,8 +67,6 @@ namespace Battleground.Api.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StatusId");
 
                     b.ToTable("Battles");
                 });
@@ -89,10 +87,6 @@ namespace Battleground.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BattlesId");
-
-                    b.HasIndex("PlayerInMatchId");
-
                     b.ToTable("BattlePlayers");
                 });
 
@@ -107,13 +101,10 @@ namespace Battleground.Api.Migrations
                     b.Property<int>("BattleId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("PokemonIdentifier")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("PokemonIdentifier")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BattleId");
 
                     b.ToTable("BattlePokemons");
                 });
@@ -150,10 +141,6 @@ namespace Battleground.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("pokemonIdentifier")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.ToTable("Players");
@@ -180,58 +167,6 @@ namespace Battleground.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PlayerInventories");
-                });
-
-            modelBuilder.Entity("Battleground.Repositories.Entities.Attack", b =>
-                {
-                    b.HasOne("Battleground.Repositories.Entities.BattlePokemon", "BattlePokemon")
-                        .WithMany()
-                        .HasForeignKey("BattlePokemonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BattlePokemon");
-                });
-
-            modelBuilder.Entity("Battleground.Repositories.Entities.Battle", b =>
-                {
-                    b.HasOne("Battleground.Repositories.Entities.BattleStatus", "BattleStatus")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BattleStatus");
-                });
-
-            modelBuilder.Entity("Battleground.Repositories.Entities.BattlePlayer", b =>
-                {
-                    b.HasOne("Battleground.Repositories.Entities.Battle", "Battle")
-                        .WithMany()
-                        .HasForeignKey("BattlesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Battleground.Repositories.Entities.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerInMatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Battle");
-
-                    b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("Battleground.Repositories.Entities.BattlePokemon", b =>
-                {
-                    b.HasOne("Battleground.Repositories.Entities.Battle", "Battle")
-                        .WithMany()
-                        .HasForeignKey("BattleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Battle");
                 });
 #pragma warning restore 612, 618
         }

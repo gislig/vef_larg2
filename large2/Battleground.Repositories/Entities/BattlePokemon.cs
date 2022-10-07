@@ -7,6 +7,7 @@ public class BattlePokemon
     
     [ForeignKey("Battle")]
     public int BattleId { get; set; }
+    public Battle Battle { get; set; }
     
-    public int PokemonIdentifier { get; set; } // TODO: Hvað er þetta?
+    public string PokemonIdentifier { get; set; } // TODO: Hvað er þetta?
 }
