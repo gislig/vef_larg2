@@ -90,10 +90,9 @@ public class BattleService : IBattleService
                         || x.Battle.BattleStatus.Name == "STARTED")
             .ToList();
 
-        if(playersInBattle.Count() == 2)
+        if(playersInBattle.Count() >= 1)
         {
-            Console.WriteLine($"Player {playersInBattle[0].Player.Name} is already in a battle");
-            Console.WriteLine($"Player {playersInBattle[1].Player.Name} is already in a battle");
+            Console.WriteLine("Player is already in a battle");
             return null;
         }
         

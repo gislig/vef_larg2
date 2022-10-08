@@ -71,6 +71,13 @@ public class InventoryService : IInventoryService
             return false;
         }
         
+        // Check if the player has 10 pokemon, if so then return false
+        var playerInventories = _dbContext.PlayerInventories.Where(x => x.PlayerId == inventoryInput.PlayerId).ToList();
+        if (playerInventories.Count >= 10)
+        {
+            return false;
+        }
+        
         // Add the pokemon to the player
         var playerInventoryEntity = new PlayerInventory
         {
