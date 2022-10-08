@@ -9,5 +9,5 @@ public class BattlePokemon
     public int BattleId { get; set; }
     public Battle Battle { get; set; }
     
-    public string PokemonIdentifier { get; set; } // TODO: Hvað er þetta?
+    public string PokemonIdentifier { get; set; }
 }

@@ -31,21 +31,21 @@ public class BattleService : IBattleService
     }
     
     // Create a new battle
-    public Battle CreateBattle(BattleInputModel battle)
+    public BattleDto CreateBattle(BattleInputModel battle)
     {
-
+        var newBattleDto = new BattleDto();
         // If battle.Players count more than two then return null
         if (battle.Players.Count() > 2 || battle.Players.Count() < 2)
         {
             Console.WriteLine("Battle must have two players");
-            return null;
+            return newBattleDto;
         }
         
         // If battle.Pokemons count more than two or less than two then return null
         if (battle.Pokemons.Count() > 2 || battle.Pokemons.Count() < 2)
         {
             Console.WriteLine("Battle must have two pokemons");
-            return null;
+            return newBattleDto;
         }
         
         // get the first item in IEnumerable item of battle.Players
@@ -57,14 +57,14 @@ public class BattleService : IBattleService
         if (player1 == null || player2 == null)
         {
             Console.WriteLine("Player not found");
-            return null;
+            return newBattleDto;
         }
         
         // Check if players are disabled if so then return null
         if (player1.Deleted == true || player2.Deleted == true)
         {
             Console.WriteLine("Player has been deleted");
-            return null;
+            return newBattleDto;
         }
         
         // get the first and second item in IEnumerable item of battle.Pokemons 
@@ -93,14 +93,14 @@ public class BattleService : IBattleService
         if(playersInBattle.Count() >= 1)
         {
             Console.WriteLine("Player is already in a battle");
-            return null;
+            return newBattleDto;
         }
         
         // If the player1 does not own the pokemon1 or player2 does not own the pokemon2 then return null
         if (!player1OwnsPokemon1 || !player2OwnsPokemon2)
         {
             Console.WriteLine("Player does not own the pokemon");
-            return null;
+            return newBattleDto;
         }
         // Create new battlestatus
         BattleStatus newBattleStatus = new BattleStatus()
@@ -117,6 +117,8 @@ public class BattleService : IBattleService
         // Create new Battle
         Battle newBattle = new Battle
         {
+            // Player1 is set temporarily while the battle is ongoing
+            Winner = player1,
             StatusId = battleStatusId
         };
 
@@ -169,22 +171,25 @@ public class BattleService : IBattleService
         try{
             // Save changes to database
             _dbContext.SaveChanges();
-            return newBattle;
+            newBattleDto.Id = newBattle.Id;
+            newBattleDto.StatusId = newBattleStatus.Id;
+            
+            return newBattleDto;
 
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            return newBattleDto;
         }
     }
     
     // Update a battle
-    public Battle UpdateBattle(Battle battle)
+    public BattleDto UpdateBattle(Battle battle)
     {
         _dbContext.Battles.Update(battle);
         _dbContext.SaveChanges();
-        return battle;
+        return new BattleDto();
     }
     
     // Delete a battle

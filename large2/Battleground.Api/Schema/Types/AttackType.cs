@@ -11,6 +11,7 @@ namespace Battleground.Api.Schema.Types
             Field(x => x.Damage).Description("");
             Field(x => x.CriticalHit).Description("");
             Field(x => x.Success).Description("");
+            
             // TODO: Field -> attackedBy: PokemonType
             // Field<ObjectGraphType<PokemonType>>("attackedBy")
             //     .Resolve(context => {

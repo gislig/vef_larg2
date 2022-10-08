@@ -12,5 +12,5 @@ public class Attack
     public int BattlePokemonId { get; set; }
     public BattlePokemon BattlePokemon { get; set; }
     
-    public int PokemonIdentifier { get; set; }
+    public string PokemonIdentifier { get; set; }
 }
