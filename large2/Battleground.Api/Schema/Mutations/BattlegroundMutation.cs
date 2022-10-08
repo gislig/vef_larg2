@@ -43,11 +43,7 @@ namespace Battleground.Api.Schema.Mutations
                     var attackResults = attackService.Value.Attack(attack);
                     
                     // If attackResults are null then throw exception
-                    if (attackResults.Id == null)
-                    {
-                        throw new ExecutionError("Attack could not be created");
-                    }
-                    
+
                     return attackResults;
                 });
             

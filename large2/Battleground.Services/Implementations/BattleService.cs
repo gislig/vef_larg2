@@ -103,7 +103,7 @@ public class BattleService : IBattleService
             return newBattleDto;
         }
         // Create new battlestatus
-        BattleStatus newBattleStatus = new BattleStatus()
+        BattleStatus? newBattleStatus = new BattleStatus()
         {
             Name = "NOT_STARTED"
         };
