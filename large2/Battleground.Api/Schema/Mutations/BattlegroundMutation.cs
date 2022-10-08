@@ -38,10 +38,11 @@ namespace Battleground.Api.Schema.Mutations
                 .Argument<NonNullGraphType<AttackInputType>>("inputAttack")
                 .Resolve(context => {
                     AttackInputModel attack = context.GetArgument<AttackInputModel>("inputAttack");
-                    
+                    Console.WriteLine("Trying to attack");
                     // use battleService to attack a pokemon
                     var attackResults = attackService.Value.Attack(attack);
-                    
+                    Console.WriteLine("Did I attack?");
+
                     // If attackResults are null then throw exception
 
                     return attackResults;

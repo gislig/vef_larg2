@@ -7,5 +7,7 @@ public class AttackDto
     public int CriticalHit { get; set; }
     public int Damage { get; set; }
     public int BattlePokemonId { get; set; }
-    public int PokemonIdentifier { get; set; }
+    public string PokemonIdentifier { get; set; }
+    public int BattleId { get; set; }
+    public int AttackerId { get; set; }
 }

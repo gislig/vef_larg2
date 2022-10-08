@@ -22,34 +22,41 @@ public class AttackService : IAttackService
         var attacker = _dbContext.Players.FirstOrDefault(b => b.Id == attack.AttackerId);
         if (attacker == null)
         {
-            throw new Exception("Attacker does not exist");
-        }
-        
-        // Check if the battle exists, it is not finished and the attacker is part of it
-        var battlePlayer = _dbContext
-            .BattlePlayers
-            .Include(x => x.Player)
-            .Where(x => x.Player.Id == attack.AttackerId)
-            .Include(x => x.Battle)
-            .ThenInclude(x => x.BattleStatus)
-            .Where(x => x.Battle.Id == attack.BattleId)
-            .FirstOrDefault(x =>
-                x.Battle.BattleStatus != null && (x.Battle.BattleStatus.Name == "NOT_STARTED" || x.Battle.BattleStatus.Name == "IN_PROGRESS"));
-        
-        if (battlePlayer == null)
-        {
-            Console.WriteLine("Could not find battle player");
+            Console.WriteLine("Attacker does not exist");
         }
 
-        Console.WriteLine("Found battle player");
+        // Check if the battle exists
+        var playerAttacks = _dbContext
+            .BattlePlayers
+            .Include(x => x.Player)
+            .Include(x => x.Battle)
+            .ThenInclude(x => x.BattleStatus)
+            .FirstOrDefault(x => x.Player.Id == attack.AttackerId);
         
-        // Check if battle is NOT_STARTED and if so, start it
-        if (battlePlayer?.Battle.BattleStatus?.Name == "NOT_STARTED")
+        if (playerAttacks == null)
         {
-            Console.WriteLine("Starting battle");
-            battlePlayer.Battle.BattleStatus = _dbContext.BattleStatuses.FirstOrDefault(x => x != null && x.Name == "IN_PROGRESS");
-            _dbContext.SaveChanges();
+            Console.WriteLine("Battle does not exist");
+            return null;
         }
+        Console.WriteLine("The battle exists");
+
+        // Check if the battle is not finished
+        if (playerAttacks.Battle.BattleStatus.Name == "FINISHED")
+        {
+            Console.WriteLine("Battle is finished");
+            return null;
+        }
+        
+        // If the battle is not started, start it
+        if (playerAttacks.Battle.BattleStatus.Name == "NOT_STARTED")
+        {
+            playerAttacks.Battle.BattleStatus.Name = "STARTED";
+            Console.WriteLine("The battle has started");
+            //_dbContext.SaveChanges();
+        }
+        
+        // Get the pokemons in battle
+
         
         // Check how many turns have passed since the last attack and see if it is the attackers turn
         // If it is not the attackers turn, return an error message

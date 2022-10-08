@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Battleground.Api.Migrations
 {
     [DbContext(typeof(BattlegroundDbContext))]
-    [Migration("20221008124106_SmallBattleChange")]
-    partial class SmallBattleChange
+    [Migration("20221008161541_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,8 +41,9 @@ namespace Battleground.Api.Migrations
                     b.Property<int>("Damage")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PokemonIdentifier")
-                        .HasColumnType("integer");
+                    b.Property<string>("PokemonIdentifier")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("Success")
                         .HasColumnType("boolean");
@@ -111,6 +112,9 @@ namespace Battleground.Api.Migrations
                     b.Property<int>("BattleId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PokemonIdentifier")
                         .IsRequired()
                         .HasColumnType("text");
@@ -118,6 +122,8 @@ namespace Battleground.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BattleId");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("BattlePokemons");
                 });
@@ -241,7 +247,15 @@ namespace Battleground.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Battleground.Repositories.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Battle");
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("Battleground.Repositories.Entities.PlayerInventory", b =>

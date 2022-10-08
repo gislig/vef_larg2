@@ -117,6 +117,7 @@ namespace Battleground.Api.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BattleId = table.Column<int>(type: "integer", nullable: false),
+                    PlayerId = table.Column<int>(type: "integer", nullable: false),
                     PokemonIdentifier = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -126,6 +127,12 @@ namespace Battleground.Api.Migrations
                         name: "FK_BattlePokemons_Battles_BattleId",
                         column: x => x.BattleId,
                         principalTable: "Battles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BattlePokemons_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -140,7 +147,7 @@ namespace Battleground.Api.Migrations
                     CriticalHit = table.Column<int>(type: "integer", nullable: false),
                     Damage = table.Column<int>(type: "integer", nullable: false),
                     BattlePokemonId = table.Column<int>(type: "integer", nullable: false),
-                    PokemonIdentifier = table.Column<int>(type: "integer", nullable: false)
+                    PokemonIdentifier = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,6 +179,11 @@ namespace Battleground.Api.Migrations
                 name: "IX_BattlePokemons_BattleId",
                 table: "BattlePokemons",
                 column: "BattleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BattlePokemons_PlayerId",
+                table: "BattlePokemons",
+                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Battles_StatusId",

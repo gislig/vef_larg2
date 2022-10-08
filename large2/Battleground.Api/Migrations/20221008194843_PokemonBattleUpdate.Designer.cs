@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Battleground.Api.Migrations
 {
     [DbContext(typeof(BattlegroundDbContext))]
-    [Migration("20221008133211_PokemonIdentifierAttack")]
-    partial class PokemonIdentifierAttack
+    [Migration("20221008194843_PokemonBattleUpdate")]
+    partial class PokemonBattleUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
