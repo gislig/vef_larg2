@@ -34,6 +34,7 @@ public class BattleService : IBattleService
     public BattleDto CreateBattle(BattleInputModel battle)
     {
         var newBattleDto = new BattleDto();
+        
         // If battle.Players count more than two then return null
         if (battle.Players.Count() > 2 || battle.Players.Count() < 2)
         {
@@ -67,9 +68,16 @@ public class BattleService : IBattleService
             return newBattleDto;
         }
         
+        
         // get the first and second item in IEnumerable item of battle.Pokemons 
         var rawPokemon1 = battle.Pokemons.First();
         var rawPokemon2 = battle.Pokemons.Last();
+
+        if (rawPokemon1 == rawPokemon2)
+        {
+            Console.WriteLine("Pokemons must be different");
+            return newBattleDto;
+        }
         
         // Check if the player1 owns the pokemon1 and player2 owns the pokemon2 with the help of PlayerInventory
         var player1OwnsPokemon1 = _dbContext

@@ -71,6 +71,15 @@ public class InventoryService : IInventoryService
             return false;
         }
         
+        // Check if other players have the pokemon
+        var otherPlayerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
+        
+        // If some other player has the pokemon then return false
+        if (otherPlayerInventory != null)
+        {
+            return false;
+        }
+        
         // Check if the player has 10 pokemon, if so then return false
         var playerInventories = _dbContext.PlayerInventories.Where(x => x.PlayerId == inventoryInput.PlayerId).ToList();
         if (playerInventories.Count >= 10)
