@@ -117,7 +117,6 @@ public class BattleService : IBattleService
         // Create new Battle
         Battle newBattle = new Battle
         {
-            WinnerId = 0,
             StatusId = battleStatusId
         };
 
