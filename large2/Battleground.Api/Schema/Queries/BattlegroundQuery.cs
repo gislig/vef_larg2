@@ -20,11 +20,11 @@ namespace Battleground.Api.Schema.Queries
             Field<ListGraphType<PokemonType>>("allPokemons")
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
             
-            Field<ListGraphType<BattleType>>("allBattles")
-            .Resolve(context => battleService.Value.GetAllAttacks());
+            // Field<ListGraphType<BattleType>>("allBattles")
+            // .ResolveAsync(async context => await battleService.Value.GetAllAttacks());
 
             Field<ListGraphType<PlayerType>>("allPlayers")
-            .Resolve(context => playerService.Value.AllPlayers());
+            .ResolveAsync(async context =>  await playerService.Value.AllPlayers());
             
 
             Field<PokemonType>("pokemon")
@@ -35,18 +35,18 @@ namespace Battleground.Api.Schema.Queries
             });
 
             //TODO: NEED TO IMPLEMENT
-            Field<BattleType>("battle")
-            .Argument<IntGraphType>("id")
-            .Resolve( context => {
-            var id = context.GetArgument<int>("id");
-            return battleService.Value.GetBattleById(1);
-            });
+            // Field<BattleType>("battle")
+            // .Argument<IntGraphType>("id")
+            // .ResolveAsync(async context => {
+            // var id = context.GetArgument<int>("id");
+            // return await battleService.Value.GetBattleById(1);
+            // });
 
             Field<PlayerType>("player")
             .Argument<IntGraphType>("id")
-            .Resolve(context => {
+            .ResolveAsync(async context => {
             var id = context.GetArgument<int>("id");
-            return playerService.Value.GetPlayerById(id);
+            return await playerService.Value.GetPlayerById(id);
             
             
             });                 

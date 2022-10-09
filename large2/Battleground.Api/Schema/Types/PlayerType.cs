@@ -17,6 +17,10 @@ namespace Battleground.Api.Schema.Types
             Field(x => x.pokemonIdentifier).Description("Pokemons in this player inventory");
             // Field<InventoryType>("owners").
 
+//         id: ID*
+// ■name: string*
+// ■inventory: An array of PokemonType (where the array cannot be null
+// nor the items within the array)
             
             // Field<NonNullGraphType<ListGraphType<InventoryType>>>("inventory").Description("Pokemon Inventory of player")
             // .Resolve(context => inventoryService.Value.GetInventoryItemsByPlayerId(1));

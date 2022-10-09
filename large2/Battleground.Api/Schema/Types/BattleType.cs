@@ -14,6 +14,14 @@ namespace Battleground.Api.Schema.Types
         }
     }
 }
+// ■status: BattleStatus*
+// ■winner: PlayerType
+// ■battlePokemons: An array of PokemonType (where the array cannot
+// be null nor the items within the array)
+// ■playersInMatch: An array of PlayerType (where the array cannot be
+// null nor the items within the array)
+// ■attacks: An array of AttackType (where the array cannot be null nor
+// the items within the array)
 
             // Field(x => x.Status).Description("Status of the battle.");
 
@@ -42,6 +50,6 @@ namespace Battleground.Api.Schema.Types
             //     .Resolve(context => {
             //         return null;
             //     });
-        }
-    }
-}
+//         }
+//     }
+// }

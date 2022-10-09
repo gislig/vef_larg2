@@ -20,7 +20,7 @@ public class InventoryService : IInventoryService
     }
     
     // Get all items in inventory
-    public IEnumerable<PlayerInventory> GetInventoryItems()
+    public async Task<IEnumerable<PlayerInventory>> GetInventoryItems()
     {
         var inventoryItems = _dbContext.PlayerInventories.ToList();
         
@@ -28,7 +28,7 @@ public class InventoryService : IInventoryService
     }
     
     // Get all items in inventory by player id
-    public IEnumerable<PlayerInventory> GetInventoryItemsByPlayerId(int playerId)
+    public async Task<IEnumerable<PlayerInventory>> GetInventoryItemsByPlayerId(int playerId)
     {
         var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId).ToList();
         
@@ -36,7 +36,7 @@ public class InventoryService : IInventoryService
     }
     
     // Get all items in inventory by item id
-    public IEnumerable<PlayerInventory> GetInventoryItemsByItemId(string pokemonIdentifier)
+    public async Task<IEnumerable<PlayerInventory>> GetInventoryItemsByItemId(string pokemonIdentifier)
     {
         var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PokemonIdentifier == pokemonIdentifier).ToList();
         
@@ -45,7 +45,7 @@ public class InventoryService : IInventoryService
     
     // Get all items in inventory by player id and item id
     //TODO FIx
-    public PlayerInventory GetInventoryItemsByPlayerIdAndItemId(int playerId, string pokemonIdentifier)
+    public async Task<PlayerInventory> GetInventoryItemsByPlayerIdAndItemId(int playerId, string pokemonIdentifier)
     {
         // var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId && x.PokemonIdentifier == pokemonIdentifier).ToList();
         
@@ -54,7 +54,7 @@ public class InventoryService : IInventoryService
     }
     
     // Add pokemonIdentifier to playerID
-    public bool AddPokemonToPlayer(InventoryInputModel inventoryInput)
+    public async Task<bool> AddPokemonToPlayer(InventoryInputModel inventoryInput)
     {
         // Check if the player already has the pokemon
         var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
@@ -106,7 +106,7 @@ public class InventoryService : IInventoryService
     }
     
     // Remove pokemonIdentifier from playerID
-    public bool RemovePokemonFromPlayer(InventoryInputModel inventoryInput)
+    public async Task<bool> RemovePokemonFromPlayer(InventoryInputModel inventoryInput)
     {
         // Check if the player exists and has the pokemon
         var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
