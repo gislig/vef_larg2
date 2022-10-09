@@ -39,7 +39,7 @@ namespace Battleground.Api.Schema.Mutations
                 .Resolve(context => {
                     AttackInputModel attack = context.GetArgument<AttackInputModel>("inputAttack");
                     Console.WriteLine("Trying to attack");
-                    // use battleService to attack a pokemon
+                    // attack a pokemon
                     var attackResults = attackService.Value.Attack(attack);
                     Console.WriteLine("Did I attack?");
 
@@ -54,7 +54,7 @@ namespace Battleground.Api.Schema.Mutations
                 .Resolve(context => {
                     PlayerInputModel player = context.GetArgument<PlayerInputModel>("inputPlayer");
                     
-                    // use battleService to create a player
+                    // use playerService to create a player
                     var playerResults = playerService.Value.CreatePlayer(player);
                     // convert playerResults to PlayerType
                     return playerResults;
@@ -69,7 +69,7 @@ namespace Battleground.Api.Schema.Mutations
                 .Argument<NonNullGraphType<InventoryInputType>>("inputInventory")
                 .Resolve(context => {
                     InventoryInputModel inventory = context.GetArgument<InventoryInputModel>("inputInventory");
-                    // use battleService to create a player
+                    // use inventoryService to create a player
                     var inventoryResults = inventoryService.Value.AddPokemonToPlayer(inventory);
                     // convert playerResults to PlayerType
                     
@@ -84,7 +84,7 @@ namespace Battleground.Api.Schema.Mutations
                 .Argument<NonNullGraphType<InventoryInputType>>("inputInventory")
                 .Resolve(context => {
                     InventoryInputModel inventory = context.GetArgument<InventoryInputModel>("inputInventory");
-                    // use battleService to create a player
+                    // use inventoryService to create a player
                     var inventoryResults = inventoryService.Value.RemovePokemonFromPlayer(inventory);
                     // convert playerResults to PlayerType
                     
@@ -97,7 +97,7 @@ namespace Battleground.Api.Schema.Mutations
                 .Argument<NonNullGraphType<IntGraphType>>("id")
                 .Resolve(context => {
                     var player = context.GetArgument<int>("id");
-                    // use battleService to create a player
+                    // use playerService to create a player
                     var playerResults = playerService.Value.RemovePlayer(player);
                     // convert playerResults to PlayerType
                     

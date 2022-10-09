@@ -8,4 +8,6 @@ public class AttackInputModel
     public int AttackerId { get; set; }
     [Required]
     public int BattleId { get; set; }
+    [Required]
+    public string PokemonIdentifier { get; set; }
 }
