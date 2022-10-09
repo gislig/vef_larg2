@@ -19,6 +19,7 @@ builder.Services.AddTransient<IPokemonService, PokemonService>();
 builder.Services.AddTransient<IPlayerService, PlayerService>();
 builder.Services.AddTransient<IBattleService, BattleService>();
 builder.Services.AddTransient<IInventoryService, InventoryService>();
+builder.Services.AddTransient<IAttackService, AttackService>();
 
 builder.Services.AddDbContext<BattlegroundDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("BattlegroundConnectionString"), b => b.MigrationsAssembly("Battleground.Api")));
 

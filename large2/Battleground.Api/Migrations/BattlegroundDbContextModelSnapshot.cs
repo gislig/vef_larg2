@@ -39,8 +39,9 @@ namespace Battleground.Api.Migrations
                     b.Property<int>("Damage")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PokemonIdentifier")
-                        .HasColumnType("integer");
+                    b.Property<string>("PokemonIdentifier")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("Success")
                         .HasColumnType("boolean");
@@ -69,6 +70,8 @@ namespace Battleground.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("StatusId");
+
+                    b.HasIndex("WinnerId");
 
                     b.ToTable("Battles");
                 });
@@ -179,6 +182,8 @@ namespace Battleground.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PlayerId");
+
                     b.ToTable("PlayerInventories");
                 });
 
@@ -201,7 +206,15 @@ namespace Battleground.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Battleground.Repositories.Entities.Player", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("BattleStatus");
+
+                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Battleground.Repositories.Entities.BattlePlayer", b =>
@@ -232,6 +245,17 @@ namespace Battleground.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Battle");
+                });
+
+            modelBuilder.Entity("Battleground.Repositories.Entities.PlayerInventory", b =>
+                {
+                    b.HasOne("Battleground.Repositories.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,7 +9,11 @@ namespace Battleground.Api.Schema.Mutations
 {
     public class BattlegroundMutation : ObjectGraphType
     {
-        public BattlegroundMutation(IDefer<IBattleService> battleService, IDefer<IPlayerService> playerService, IDefer<IInventoryService> inventoryService)
+        public BattlegroundMutation(
+            IDefer<IBattleService> battleService, 
+            IDefer<IPlayerService> playerService, 
+            IDefer<IInventoryService> inventoryService, 
+            IDefer<IAttackService> attackService)
         {
             // TODO : addBattle - Create a battle between two players pokémons and returns the newly created battle
             Field<NonNullGraphType<BattleType>>("addBattle")
@@ -20,10 +24,29 @@ namespace Battleground.Api.Schema.Mutations
                     // use battleService to create a battle
                     var battleResults = battleService.Value.CreateBattle(battle);
                     
+                    // If battleResults are null then throw exception
+                    if (battleResults.Id == null)
+                    {
+                        throw new ExecutionError("Battle could not be created");
+                    }
+                    
                     return battleResults;
                 });
             
             // TODO : attack - Attacks a pokemon within a battle and returns the result
+            Field<NonNullGraphType<AttackType>>("attack")
+                .Argument<NonNullGraphType<AttackInputType>>("inputAttack")
+                .Resolve(context => {
+                    AttackInputModel attack = context.GetArgument<AttackInputModel>("inputAttack");
+                    Console.WriteLine("Trying to attack");
+                    // use battleService to attack a pokemon
+                    var attackResults = attackService.Value.Attack(attack);
+                    Console.WriteLine("Did I attack?");
+
+                    // If attackResults are null then throw exception
+
+                    return attackResults;
+                });
             
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type
             Field<NonNullGraphType<PlayerType>>("addPlayer")
