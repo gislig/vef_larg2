@@ -66,14 +66,24 @@ namespace Battleground.Api.Schema.Queries
                     var id = context.GetArgument<int>("id");
                     var player = await playerService.Value.GetPlayerById(id);
                     var pokemons_arr = await inventoryService.Value.GetInventoryItemsByPlayerId(id);
+                    var pokemon = await _pokemonService.GetPokemonByName(pokemons_arr.First().PokemonIdentifier);
 
                     return new PlayerDto
                         {
                             Id = player.Id,
                             Name = player.Name,
-                            Inventory = pokemons_arr.Select(x => new PokemonDto{
-                                name = x.PokemonIdentifier
-                            }).FirstOrDefault()
+                            Inventory = new PokemonDto
+                            {
+                                name = pokemon.name,
+                                baseAttack = pokemon.baseAttack,
+                                healthPoints = pokemon.healthPoints,
+                                weight = pokemon.weight,
+                                owners = new PlayerDto
+                                {
+                                    Id = player.Id,
+                                    Name = player.Name
+                                }
+                            }
                         };
 
                 });
