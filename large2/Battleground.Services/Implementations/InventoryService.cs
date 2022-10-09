@@ -90,10 +90,14 @@ public class InventoryService : IInventoryService
             return false;
         }
         
+        // Get Player
+        var player = await _dbContext.Players.FirstOrDefaultAsync(x => x.Id == inventoryInput.PlayerId);
+        
         // Add the pokemon to the player
         var playerInventoryEntity = new PlayerInventory
         {
-            PlayerId = inventoryInput.PlayerId,
+            PlayerId = player.Id,
+            //Player = player,
             PokemonIdentifier = inventoryInput.PokemonIdentifier.ToLower(),
             AcquiredDate = DateTime.Now.ToUniversalTime()
         };
@@ -106,6 +110,8 @@ public class InventoryService : IInventoryService
         {
             return false;
         }
+
+        return false;
     }
     
     // Remove pokemonIdentifier from playerID
@@ -126,6 +132,8 @@ public class InventoryService : IInventoryService
         }catch{
             return false;
         }
+
+        return false;
     }
 
     public async Task<PokemonDto> GetPokemonByName(string name)
