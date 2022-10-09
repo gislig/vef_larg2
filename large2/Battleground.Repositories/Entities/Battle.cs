@@ -12,4 +12,8 @@ public class Battle
     [ForeignKey("BattleStatus")]
     public int StatusId { get; set; }
     public BattleStatus? BattleStatus { get; set; }
+    // refrence í BattlePlayer töfluna
+    public ICollection<BattlePlayer> BattlePlayers { get; set; }
+    public ICollection<BattlePokemon> BattlePokemons { get; set; }
+
 }

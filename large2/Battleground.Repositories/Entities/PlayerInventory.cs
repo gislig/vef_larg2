@@ -7,7 +7,7 @@ public class PlayerInventory
     
     [ForeignKey("Player")]
     public int PlayerId { get; set; }
-    public Player Player { get; set; }
+    public Player? Player { get; set; }
     
     public DateTime AcquiredDate { get; set; }
 

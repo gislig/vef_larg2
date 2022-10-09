@@ -313,4 +313,9 @@ public class AttackService : IAttackService
         // If it is the attackers turn, continue with the attack
         return newAttackDto;
     } 
+
+    public async Task<IEnumerable<Attack>> GetAttacksByBattlePokemons(int id) {
+        return await _dbContext.Attacks.Where(b => b.BattlePokemonId == id).ToListAsync();
+        
+    }
 }
