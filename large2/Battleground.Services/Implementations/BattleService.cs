@@ -16,7 +16,7 @@ public class BattleService : IBattleService
     }
     
     // (5%) battle - Should return a specific battle by id
-    public Battle? GetBattleById(int id)
+    public async Task<Battle?> GetBattleById(int id)
     {
         return _dbContext.Battles.Find(id);
     }
@@ -25,13 +25,13 @@ public class BattleService : IBattleService
     //argument called status which is of type BattleStatus (enum) and should be
     //used to filter the data based on the status of the battle
     // TODO: Þarf að lagfæra þetta út frá þessum texta
-    public IEnumerable<Battle?> AllBattles()
+    public async Task<IEnumerable<Battle?>> AllBattles()
     {
         return _dbContext.Battles.ToList();
     }
     
     // Create a new battle
-    public BattleDto CreateBattle(BattleInputModel battle)
+    public async Task<BattleDto> CreateBattle(BattleInputModel battle)
     {
         var newBattleDto = new BattleDto();
         
@@ -190,31 +190,5 @@ public class BattleService : IBattleService
             Console.WriteLine(e);
             return newBattleDto;
         }
-    }
-    
-    // Update a battle
-    public BattleDto UpdateBattle(Battle battle)
-    {
-        _dbContext.Battles.Update(battle);
-        _dbContext.SaveChanges();
-        return new BattleDto();
-    }
-    
-    // Delete a battle
-    public Battle DeleteBattle(Battle battle)
-    {
-        _dbContext.Battles.Remove(battle);
-        _dbContext.SaveChanges();
-        return battle;
-    }
-    public IEnumerable<Attack> GetAllAttacks()
-    {
-        return _dbContext.Attacks;
-    }
-    
-    // Get a specific attack from the database async
-    public Attack? GetAttackById(int id)
-    {
-        return _dbContext.Attacks.Find(id);
     }
 }

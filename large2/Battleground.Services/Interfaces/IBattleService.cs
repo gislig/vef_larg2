@@ -8,10 +8,7 @@ namespace Battleground.Services.Interfaces;
 
 public interface IBattleService
 {
-    BattleDto CreateBattle(BattleInputModel battle);
-    BattleDto UpdateBattle(Battle battle);
-    Battle DeleteBattle(Battle battle);
-    Battle? GetBattleById(int id);
-    IEnumerable<Attack> GetAllAttacks();
-    Attack? GetAttackById(int id);
+    Task<BattleDto> CreateBattle(BattleInputModel battle);
+    Task<Battle?> GetBattleById(int id);
+    Task<IEnumerable<Battle?>> AllBattles();
 }
