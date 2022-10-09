@@ -118,7 +118,37 @@ namespace Battleground.Api.Schema.Queries
 
 
             Field<ListGraphType<PlayerType>>("allPlayers")
-            .ResolveAsync(async context =>  await playerService.Value.AllPlayers());
+            .ResolveAsync(async context =>  {
+                var players = await playerService.Value.AllPlayers();
+                var ret_value = new List<PlayerDto>();
+                foreach (var player in players)
+                {
+                    var pokemons_arr = await inventoryService.Value.GetInventoryItemsByPlayerId(player.Id);
+                    var pokemons = new List<PokemonDto>();
+                    foreach (var pokemon in pokemons_arr)
+                    {
+                        var pokemon_resp = await _pokemonService.GetPokemonByName(pokemon.PokemonIdentifier);
+                        pokemons.Add(new PokemonDto{
+                            name = pokemon_resp.name,
+                            healthPoints = pokemon_resp.healthPoints,
+                            baseAttack = pokemon_resp.baseAttack,
+                            weight = pokemon_resp.weight,
+                            owners = player
+                        });
+                    }
+
+                    ret_value.Add(
+
+                        new PlayerDto
+                        {
+                            Id = player.Id,
+                            Name = player.Name,
+                            Inventory = pokemons
+                        }
+                    );
+                }
+                return ret_value;
+            });
             
 
             Field<PokemonType>("pokemon")
@@ -210,24 +240,24 @@ namespace Battleground.Api.Schema.Queries
                     var id = context.GetArgument<int>("id");
                     var player = await playerService.Value.GetPlayerById(id);
                     var pokemons_arr = await inventoryService.Value.GetInventoryItemsByPlayerId(id);
-                    var pokemon = await _pokemonService.GetPokemonByName(pokemons_arr.First().PokemonIdentifier);
+                    var pokemons = new List<PokemonDto>();
+                    foreach (var pokemon in pokemons_arr)
+                    {
+                        var pokemon_resp = await _pokemonService.GetPokemonByName(pokemon.PokemonIdentifier);
+                        pokemons.Add(new PokemonDto{
+                            name = pokemon_resp.name,
+                            healthPoints = pokemon_resp.healthPoints,
+                            baseAttack = pokemon_resp.baseAttack,
+                            weight = pokemon_resp.weight,
+                            owners = player
+                        });
+                    }
 
                     return new PlayerDto
                         {
                             Id = player.Id,
                             Name = player.Name,
-                            Inventory = new PokemonDto
-                            {
-                                name = pokemon.name,
-                                baseAttack = pokemon.baseAttack,
-                                healthPoints = pokemon.healthPoints,
-                                weight = pokemon.weight,
-                                owners = new PlayerDto
-                                {
-                                    Id = player.Id,
-                                    Name = player.Name
-                                }
-                            }
+                            Inventory = pokemons
                         };
 
                 });
