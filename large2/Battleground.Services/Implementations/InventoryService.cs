@@ -38,7 +38,9 @@ public class InventoryService : IInventoryService
     // Get all items in inventory by item id
     public async Task<IEnumerable<PlayerInventory>> GetInventoryItemsByItemId(string pokemonIdentifier)
     {
-        var inventoryItems = await _dbContext.PlayerInventories.Where(x => x.PokemonIdentifier == pokemonIdentifier).ToListAsync();
+        var inventoryItems = await _dbContext.PlayerInventories
+            .Include(x => x.Player)
+            .Where(x => x.PokemonIdentifier == pokemonIdentifier).ToListAsync();
         
         return inventoryItems;
     }
@@ -123,5 +125,26 @@ public class InventoryService : IInventoryService
         }catch{
             return false;
         }
+    }
+
+    public async Task<PokemonDto> GetPokemonByName(string name)
+    {
+        var pokemon = await _pokemonService.GetPokemonByName(name);
+
+        var player = await GetInventoryItemsByItemId(name);
+
+        var owner = player.FirstOrDefault().Player;
+
+        return new PokemonDto {
+            name = pokemon.name,
+            healthPoints = pokemon.healthPoints,
+            baseAttack = pokemon.baseAttack,
+            weight = pokemon.weight,
+            owners = new PlayerDto {
+                Id = owner.Id,
+                Name = owner.Name,
+                Deleted = owner.Deleted,
+            },
+        };
     }
 }

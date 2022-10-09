@@ -4,6 +4,7 @@ using Battleground.Repositories;
 using Battleground.Repositories.Entities;
 using Battleground.Services.Implementations;
 using Battleground.Services.Interfaces;
+using Battleground.Models.Dtos;
 
 using GraphQL.Types;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,24 @@ namespace Battleground.Api.Schema.Queries
             Field<PokemonType>("pokemon")
             .Argument<StringGraphType>("name")
             .ResolveAsync(async context => {
-            var name = context.GetArgument<string>("name");
-            return await _pokemonService.GetPokemonByName(name);
+                var name = context.GetArgument<string>("name");
+                var pokemon = await _pokemonService.GetPokemonByName(name);
+                var owner_arr = await inventoryService.Value.GetInventoryItemsByItemId(name);
+                var owner = owner_arr.First().Player;
+
+                return new PokemonDto{
+
+                    name = pokemon.name,
+                    baseAttack = pokemon.baseAttack,
+                    healthPoints = pokemon.healthPoints,
+                    weight = pokemon.weight,
+                    owners = new PlayerDto {
+                        Id = owner.Id,
+                        Name = owner.Name,
+                        Deleted = owner.Deleted
+                    }
+                };
+            
             });
 
             //TODO: NEED TO IMPLEMENT
