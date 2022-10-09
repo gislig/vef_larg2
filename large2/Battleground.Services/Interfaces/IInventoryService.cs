@@ -1,4 +1,5 @@
 ﻿using Battleground.Models.InputModels;
+using Battleground.Models.Dtos;
 using Battleground.Repositories.Entities;
 
 namespace Battleground.Services.Interfaces;
@@ -11,4 +12,6 @@ public interface IInventoryService
     Task<IEnumerable<PlayerInventory>> GetInventoryItemsByItemId(string pokemonIdentifier);
     Task<IEnumerable<PlayerInventory>> GetInventoryItemsByPlayerId(int playerId);
     Task<IEnumerable<PlayerInventory>> GetInventoryItems();
+
+    Task<PokemonDto>GetPokemonByName(string name);
 }

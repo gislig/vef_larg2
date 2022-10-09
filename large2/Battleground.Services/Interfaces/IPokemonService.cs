@@ -5,5 +5,5 @@ namespace Battleground.Services.Interfaces;
 public interface IPokemonService
 {
     Task<IEnumerable<PokemonDto>?> GetAllPokemons();
-    Task<PokemonDto?> GetPokemonByName(string name);
+    Task<PokemonResponseDto?> GetPokemonByName(string name);
 }
