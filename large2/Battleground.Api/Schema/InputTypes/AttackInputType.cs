@@ -10,6 +10,7 @@ public class AttackInputType : InputObjectGraphType<AttackInputModel>
     {
         Name = "AttackInput";
         Field(x => x.AttackerId);
+        Field(x => x.PokemonIdentifier);
         Field(x => x.BattleId);
     }
 }

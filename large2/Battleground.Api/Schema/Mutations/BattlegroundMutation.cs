@@ -18,11 +18,11 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : addBattle - Create a battle between two players pokémons and returns the newly created battle
             Field<NonNullGraphType<BattleType>>("addBattle")
                 .Argument<NonNullGraphType<BattleInputType>>("inputBattle")
-                .Resolve(context => {
+                .ResolveAsync(async context => {
                     BattleInputModel battle = context.GetArgument<BattleInputModel>("inputBattle");
                     
                     // use battleService to create a battle
-                    var battleResults = battleService.Value.CreateBattle(battle);
+                    var battleResults = await battleService.Value.CreateBattle(battle);
                     
                     // If battleResults are null then throw exception
                     if (battleResults.Id == null)
@@ -33,14 +33,15 @@ namespace Battleground.Api.Schema.Mutations
                     return battleResults;
                 });
             
+            
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             Field<NonNullGraphType<AttackType>>("attack")
                 .Argument<NonNullGraphType<AttackInputType>>("inputAttack")
-                .Resolve(context => {
+                .ResolveAsync(async context => {
                     AttackInputModel attack = context.GetArgument<AttackInputModel>("inputAttack");
                     Console.WriteLine("Trying to attack");
-                    // use battleService to attack a pokemon
-                    var attackResults = attackService.Value.Attack(attack);
+                    // attack a pokemon
+                    var attackResults = await attackService.Value.Attack(attack);
                     Console.WriteLine("Did I attack?");
 
                     // If attackResults are null then throw exception
@@ -51,11 +52,11 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : addPlayer - Create a player and return the newly created player matching the Player type
             Field<NonNullGraphType<PlayerType>>("addPlayer")
                 .Argument<NonNullGraphType<PlayerInputType>>("inputPlayer")
-                .Resolve(context => {
+                .ResolveAsync(async context => {
                     PlayerInputModel player = context.GetArgument<PlayerInputModel>("inputPlayer");
                     
-                    // use battleService to create a player
-                    var playerResults = playerService.Value.CreatePlayer(player);
+                    // use playerService to create a player
+                    var playerResults = await playerService.Value.CreatePlayer(player);
                     // convert playerResults to PlayerType
                     return playerResults;
                 });
@@ -67,10 +68,10 @@ namespace Battleground.Api.Schema.Mutations
             // therefore no duplicates allowed in the inventory
             Field<BooleanGraphType>("addPokemonToInventory")
                 .Argument<NonNullGraphType<InventoryInputType>>("inputInventory")
-                .Resolve(context => {
+                .ResolveAsync(async context => {
                     InventoryInputModel inventory = context.GetArgument<InventoryInputModel>("inputInventory");
-                    // use battleService to create a player
-                    var inventoryResults = inventoryService.Value.AddPokemonToPlayer(inventory);
+                    // use inventoryService to create a player
+                    var inventoryResults = await inventoryService.Value.AddPokemonToPlayer(inventory);
                     // convert playerResults to PlayerType
                     
                     // throw InventoryException IF false returns else return inventoryResults
@@ -82,10 +83,10 @@ namespace Battleground.Api.Schema.Mutations
             // happened
             Field<BooleanGraphType>("removePokemonFromInventory")
                 .Argument<NonNullGraphType<InventoryInputType>>("inputInventory")
-                .Resolve(context => {
+                .ResolveAsync(async context => {
                     InventoryInputModel inventory = context.GetArgument<InventoryInputModel>("inputInventory");
-                    // use battleService to create a player
-                    var inventoryResults = inventoryService.Value.RemovePokemonFromPlayer(inventory);
+                    // use inventoryService to create a player
+                    var inventoryResults = await inventoryService.Value.RemovePokemonFromPlayer(inventory);
                     // convert playerResults to PlayerType
                     
                     // throw InventoryException IF false returns else return inventoryResults
@@ -95,10 +96,10 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : removePlayer
             Field<BooleanGraphType>("removePlayer")
                 .Argument<NonNullGraphType<IntGraphType>>("id")
-                .Resolve(context => {
+                .ResolveAsync(async context => {
                     var player = context.GetArgument<int>("id");
-                    // use battleService to create a player
-                    var playerResults = playerService.Value.RemovePlayer(player);
+                    // use playerService to create a player
+                    var playerResults = await playerService.Value.RemovePlayer(player);
                     // convert playerResults to PlayerType
                     
                     // throw InventoryException IF false returns else return inventoryResults
