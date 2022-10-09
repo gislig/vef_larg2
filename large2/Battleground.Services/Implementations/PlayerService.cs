@@ -20,7 +20,7 @@ public class PlayerService : IPlayerService
     // (5%) player - Should return a specific player by id
     public async Task<PlayerDto?> GetPlayerById(int id)
     {
-        var player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+        var player = await _dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
         if(player != null)
             return new PlayerDto {
                 Id = player.Id,
@@ -33,11 +33,11 @@ public class PlayerService : IPlayerService
     // (5%) allPlayers - Should return a collection of all players
     public async Task<IEnumerable<PlayerDto?>> AllPlayers()
     {  
-        return _dbContext.Players.Select(p => new PlayerDto {
+        return await _dbContext.Players.Select(p => new PlayerDto {
             Id = p.Id,
             Name = p.Name,
             Deleted = p.Deleted
-        });
+        }).ToListAsync();
     }   
     
 
@@ -50,8 +50,8 @@ public class PlayerService : IPlayerService
             Deleted = false
         };
         
-        _dbContext.Players.Add(newPlayer);
-        _dbContext.SaveChanges();
+        await _dbContext.Players.AddAsync(newPlayer);
+        await _dbContext.SaveChangesAsync();
         
         PlayerDto playerDto = new PlayerDto()
         {
@@ -68,7 +68,7 @@ public class PlayerService : IPlayerService
     {
         
         _dbContext.Players.Update(player);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
         return player;
     }
 
@@ -80,7 +80,7 @@ public class PlayerService : IPlayerService
         {
             playerToUpdate.Deleted = true;
             _dbContext.Players.Update(playerToUpdate);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return true;
         }
         return false;
