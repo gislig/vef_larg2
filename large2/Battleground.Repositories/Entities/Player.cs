@@ -9,5 +9,5 @@ public class Player
     public string Name { get; set; }
     [Required]
     public bool Deleted { get; set; }
-
+    //public string pokemonIdentifier {get; set; } // ÞETTA ER BANNAÐ!!
 }

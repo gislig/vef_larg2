@@ -205,13 +205,40 @@ namespace Battleground.Api.Schema.Queries
             });
 
             Field<PlayerType>("player")
-            .Argument<IntGraphType>("id")
-            .ResolveAsync(async context => {
-                var id = context.GetArgument<int>("id");
-                return await playerService.Value.GetPlayerById(id);
+                .Argument<IntGraphType>("id")
+                .ResolveAsync(async context => {
+                    var id = context.GetArgument<int>("id");
+                    var player = await playerService.Value.GetPlayerById(id);
+                    var pokemons_arr = await inventoryService.Value.GetInventoryItemsByPlayerId(id);
+                    var pokemon = await _pokemonService.GetPokemonByName(pokemons_arr.First().PokemonIdentifier);
+
+                    return new PlayerDto
+                        {
+                            Id = player.Id,
+                            Name = player.Name,
+                            Inventory = new PokemonDto
+                            {
+                                name = pokemon.name,
+                                baseAttack = pokemon.baseAttack,
+                                healthPoints = pokemon.healthPoints,
+                                weight = pokemon.weight,
+                                owners = new PlayerDto
+                                {
+                                    Id = player.Id,
+                                    Name = player.Name
+                                }
+                            }
+                        };
+
+                });
             
             
-            });                 
-        }
+
+
+            // var id = context.GetArgument<int>("id");
+            // return await playerService.Value.GetPlayerById(id);
+            
+            
+        }                 
     }
 }
