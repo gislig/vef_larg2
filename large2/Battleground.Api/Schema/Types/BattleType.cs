@@ -14,7 +14,7 @@ namespace Battleground.Api.Schema.Types
             Field(x => x.StatusId).Description("The Status of the battle");
             Field(x => x.PlayersInMatch, type: typeof(ListGraphType<PlayerType>), nullable: true).Description("Players in match");
             Field(x => x.BattlePokemons, type: typeof(ListGraphType<PokemonType>), nullable: true).Description("Pokemons in battle");
-            Field(x => x.Attacks, type: typeof(ListGraphType<AttackType>), nullable: true).Description("attacks in match");
+            Field(x => x.Attacks, type: typeof(ListGraphType<AttackType2>), nullable: true).Description("attacks in match");
             // Field(x => x.Attacks, type: typeof(AttackDto)).Description("Attacks in the mathc");
         }
     }
