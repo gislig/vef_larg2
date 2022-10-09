@@ -16,12 +16,7 @@ namespace Battleground.Api.Schema.Types
             Field(x => x.BattlePokemonId).Description("The id of the pokemon in battle");
             Field(x => x.BattleId).Description("The id of the battle");
             Field(x => x.AttackerId).Description("The id of the attacker");
-            
-            // TODO: Field -> attackedBy: PokemonType
-            // Field<ObjectGraphType<PokemonType>>("attackedBy")
-            //     .Resolve(context => {
-            //         return null;
-            //     });
+    
         }
     }
 }

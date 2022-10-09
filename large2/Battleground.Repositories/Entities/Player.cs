@@ -1,3 +1,4 @@
+using Battleground.Models.Dtos;
 namespace Battleground.Repositories.Entities;
 
 public class Player
@@ -8,4 +9,5 @@ public class Player
     public string Name { get; set; }
     [Required]
     public bool Deleted { get; set; }
+    public string pokemonIdentifier {get; set; }
 }

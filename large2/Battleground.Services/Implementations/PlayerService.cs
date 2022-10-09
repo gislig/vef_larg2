@@ -18,7 +18,7 @@ public class PlayerService : IPlayerService
     }
 
     // (5%) player - Should return a specific player by id
-    public PlayerDto? GetPlayerById(int id)
+    public async Task<PlayerDto?> GetPlayerById(int id)
     {
         var player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
         if(player != null)
@@ -31,18 +31,18 @@ public class PlayerService : IPlayerService
     }
 
     // (5%) allPlayers - Should return a collection of all players
-    public IEnumerable<PlayerDto?> AllPlayers()
-    {   
+    public async Task<IEnumerable<PlayerDto?>> AllPlayers()
+    {  
         return _dbContext.Players.Select(p => new PlayerDto {
             Id = p.Id,
             Name = p.Name,
             Deleted = p.Deleted
-        });  
+        });
     }   
     
 
     // Create a new player
-    public PlayerDto? CreatePlayer(PlayerInputModel player)
+    public async Task<PlayerDto?> CreatePlayer(PlayerInputModel player)
     {
         Player newPlayer = new Player()
         {
@@ -64,7 +64,7 @@ public class PlayerService : IPlayerService
     }
 
     // Update Player
-    public Player? UpdatePlayer(Player player)
+    public async Task<Player?> UpdatePlayer(Player player)
     {
         
         _dbContext.Players.Update(player);
@@ -73,7 +73,7 @@ public class PlayerService : IPlayerService
     }
 
     // Delete Player
-    public bool RemovePlayer(int id)
+    public async Task<bool> RemovePlayer(int id)
     {
         var playerToUpdate = _dbContext.Players.FirstOrDefault(p => p.Id == id);
         if(playerToUpdate != null)

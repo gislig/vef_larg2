@@ -5,5 +5,5 @@ public class PokemonDto
     public int healthPoints { get; set; }
     public int baseAttack { get; set; }
     public int weight { get; set; }
-    // public IEnumerable<PlayerDto> owners { get; set; }
+    public int owners { get; set; }
 }

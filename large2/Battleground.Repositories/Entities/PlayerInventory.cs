@@ -10,6 +10,7 @@ public class PlayerInventory
     public Player Player { get; set; }
     
     public DateTime AcquiredDate { get; set; }
-    
+
     public string PokemonIdentifier { get; set; }
+
 }
