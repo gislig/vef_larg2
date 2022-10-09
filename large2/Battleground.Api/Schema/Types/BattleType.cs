@@ -8,9 +8,14 @@ namespace Battleground.Api.Schema.Types
     {
         public BattleType()
         {
-            Field(x => x.Id).Description("The id of the Battle.");  
+            Field(x => x.Id).Description("The id of the Battle.");
+            Field(x => x.Winner, type: typeof(PlayerType), nullable: true).Description("Battle Winner");
             Field(x => x.WinnerId).Description("The Id of the winner for this battle");
             Field(x => x.StatusId).Description("The Status of the battle");
+            Field(x => x.PlayersInMatch, type: typeof(ListGraphType<PlayerType>), nullable: true).Description("Players in match");
+            Field(x => x.BattlePokemons, type: typeof(ListGraphType<PokemonType>), nullable: true).Description("Pokemons in battle");
+            Field(x => x.Attacks, type: typeof(ListGraphType<AttackType>), nullable: true).Description("attacks in match");
+            // Field(x => x.Attacks, type: typeof(AttackDto)).Description("Attacks in the mathc");
         }
     }
 }

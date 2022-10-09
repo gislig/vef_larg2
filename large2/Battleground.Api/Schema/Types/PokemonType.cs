@@ -10,7 +10,7 @@ public sealed class PokemonType : ObjectGraphType<PokemonDto>
         Field(x => x.baseAttack).Description("The base attack of the pokemon");
         Field(x => x.healthPoints).Description("The health points of the pokemon");
         Field(x => x.weight).Description("The weight of the pokemon");
-        Field(x => x.owners, type: typeof(PlayerType)).Description("Owner of the pokemon");
+        Field(x => x.owners, type: typeof(PlayerType), nullable: true).Description("Owner of the pokemon");
 
     }
 }

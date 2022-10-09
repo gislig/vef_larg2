@@ -22,7 +22,8 @@ public class InventoryService : IInventoryService
     // Get all items in inventory
     public async Task<IEnumerable<PlayerInventory>> GetInventoryItems()
     {
-        var inventoryItems = await _dbContext.PlayerInventories.ToListAsync();
+        var inventoryItems = await _dbContext.PlayerInventories
+        .Include(x => x.Player).ToListAsync();
         
         return inventoryItems;
     }

@@ -13,7 +13,7 @@ namespace Battleground.Repositories
         public BattlegroundDbContext(DbContextOptions<BattlegroundDbContext> options) : base(options) {}
         
         public DbSet<Attack> Attacks { get; set; }
-        public DbSet<Battle?> Battles { get; set; }
+        public DbSet<Battle?> ?Battles { get; set; }
         public DbSet<BattlePlayer> BattlePlayers { get; set; }
         public DbSet<BattlePokemon> BattlePokemons { get; set; }
         public DbSet<BattleStatus?> BattleStatuses { get; set; }

@@ -18,7 +18,14 @@ public class BattleService : IBattleService
     // (5%) battle - Should return a specific battle by id
     public async Task<Battle?> GetBattleById(int id)
     {
-        return await _dbContext.Battles.FindAsync(id);
+        var battle = await _dbContext.Battles
+            .Include(b => b.Winner)
+            .Include(b => b.BattlePlayers)
+            .Include(b => b.BattlePokemons)
+            .Include(b => b.BattleStatus)
+            .FirstOrDefaultAsync(b => b.Id == id);
+
+        return battle;        
     }
     
     //allBattles - Should return a collection of all battles. Contains a field
@@ -27,7 +34,13 @@ public class BattleService : IBattleService
     // TODO: Þarf að lagfæra þetta út frá þessum texta
     public async Task<IEnumerable<Battle?>> AllBattles()
     {
-        return await _dbContext.Battles.ToListAsync();
+        var battle = await _dbContext.Battles
+            .Include(b => b.Winner)
+            .Include(b => b.BattlePlayers)
+            .Include(b => b.BattlePokemons)
+            .Include(b => b.BattleStatus)
+            .ToListAsync();
+        return battle;
     }
     
     // Create a new battle
