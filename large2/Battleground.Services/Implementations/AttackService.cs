@@ -21,30 +21,34 @@ public class AttackService : IAttackService
     {
         var newAttackDto = new AttackDto();
 
+        Console.WriteLine("Checking if attacker exists...");
+        Console.WriteLine(attack.AttackerId + " " + attack.BattleId + " " + attack.PokemonIdentifier);
         // Check if the attacker exists
-        var attacker = _dbContext.Players.FirstOrDefault(b => b.Id == attack.AttackerId);
+        var attacker = await _dbContext.Players.FirstOrDefaultAsync(b => b.Id == attack.AttackerId);
         if (attacker == null)
         {
             Console.WriteLine("Attacker does not exist");
             return newAttackDto;
         }
         
+        Console.WriteLine("Checking if battle exists...");
         // Check if the battle exists
-        var battle = _dbContext.Battles.FirstOrDefault(b => b.Id == attack.BattleId);
+        var battle = await _dbContext.Battles.FirstOrDefaultAsync(b => b.Id == attack.BattleId);
         if (battle == null)
         {
             Console.WriteLine("Battle does not exist");
             return newAttackDto;
         }
         
+        Console.WriteLine("Checking if player is in the battle...");
         // Check if the player is in the battle
-        var playerAttacks = _dbContext
+        var playerAttacks = await _dbContext
             .BattlePlayers
             .Include(x => x.Player)
             .Include(x => x.Battle)
             .ThenInclude(x => x.BattleStatus)
             .Where(x => x.Battle.Id == attack.BattleId)
-            .FirstOrDefault(x => x.Player.Id == attack.AttackerId);
+            .FirstOrDefaultAsync(x => x.Player.Id == attack.AttackerId);
         
         if (playerAttacks == null)
         {
@@ -52,6 +56,7 @@ public class AttackService : IAttackService
             return newAttackDto;
         }
 
+        Console.WriteLine("Checking if battle is active...");
         // Check if the battle is not finished
         if (playerAttacks.Battle.BattleStatus.Name == "FINISHED")
         {
@@ -66,12 +71,12 @@ public class AttackService : IAttackService
             Console.WriteLine("The battle has started");
             //_dbContext.SaveChanges();
         }
-        
+        Console.WriteLine("Checking if pokemonIdentifier exists...");
         // Check if the pokemonIdentifier exists on the owner
-        var attackersPokemon = _dbContext
+        var attackersPokemon = await _dbContext
             .PlayerInventories
             .Where(x => x.Player.Id == attack.AttackerId)
-            .FirstOrDefault(x => x.PokemonIdentifier == attack.PokemonIdentifier);
+            .FirstOrDefaultAsync(x => x.PokemonIdentifier == attack.PokemonIdentifier);
 
         // If the pokemon does not exist return null
         if (attackersPokemon == null)
@@ -81,11 +86,11 @@ public class AttackService : IAttackService
         }
         
         // Get the pokemons in battle
-        var pokemonsInBattle = _dbContext
+        var pokemonsInBattle = await _dbContext
             .BattlePokemons
             .Include(x => x.Battle)
             .Where(x => x.Battle.Id == attack.BattleId)
-            .ToList();
+            .ToListAsync();
 
         Console.WriteLine(pokemonsInBattle.Count);
         if (pokemonsInBattle.Count != 2)
@@ -95,17 +100,17 @@ public class AttackService : IAttackService
         }
         
         // Get the turns
-        var turnsPokemon1 = _dbContext
+        var turnsPokemon1 = await _dbContext
             .Attacks
             .Where(x => x.BattlePokemon.BattleId == attack.BattleId)
             .Where(x => x.PokemonIdentifier == pokemonsInBattle[0].PokemonIdentifier)
-            .ToList();
+            .ToListAsync();
 
-        var turnsPokemon2 = _dbContext
+        var turnsPokemon2 = await _dbContext
             .Attacks
             .Where(x => x.BattlePokemon.BattleId == attack.BattleId)
             .Where(x => x.PokemonIdentifier == pokemonsInBattle[1].PokemonIdentifier)
-            .ToList();
+            .ToListAsync();
         
         // Get count of the turns
         var attackPokemon1Turn = turnsPokemon1.Count;
@@ -148,11 +153,9 @@ public class AttackService : IAttackService
         
         
         Console.WriteLine("I attacked");
-        
         // Check how many turns have passed since the last attack and see if it is the attackers turn
         // If it is not the attackers turn, return an error message
         // If it is the attackers turn, continue with the attack
-        
         return new AttackDto();
     } 
 }

@@ -44,7 +44,7 @@ public class PlayerService : IPlayerService
     // Create a new player
     public async Task<PlayerDto?> CreatePlayer(PlayerInputModel player)
     {
-        Player newPlayer = new Player()
+        Player? newPlayer = new Player()
         {
             Name = player.Name,
             Deleted = false
@@ -64,7 +64,7 @@ public class PlayerService : IPlayerService
     }
 
     // Update Player
-    public async Task<Player?> UpdatePlayer(Player player)
+    public async Task<Player?> UpdatePlayer(Player? player)
     {
         
         _dbContext.Players.Update(player);
