@@ -18,11 +18,11 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : addBattle - Create a battle between two players pokémons and returns the newly created battle
             Field<NonNullGraphType<BattleType>>("addBattle")
                 .Argument<NonNullGraphType<BattleInputType>>("inputBattle")
-                .Resolve(context => {
+                .Resolve(async context => {
                     BattleInputModel battle = context.GetArgument<BattleInputModel>("inputBattle");
                     
                     // use battleService to create a battle
-                    var battleResults = battleService.Value.CreateBattle(battle);
+                    var battleResults = await battleService.Value.CreateBattle(battle);
                     
                     // If battleResults are null then throw exception
                     if (battleResults.Id == null)
@@ -36,11 +36,11 @@ namespace Battleground.Api.Schema.Mutations
             // TODO : attack - Attacks a pokemon within a battle and returns the result
             Field<NonNullGraphType<AttackType>>("attack")
                 .Argument<NonNullGraphType<AttackInputType>>("inputAttack")
-                .Resolve(context => {
+                .Resolve(async context => {
                     AttackInputModel attack = context.GetArgument<AttackInputModel>("inputAttack");
                     Console.WriteLine("Trying to attack");
                     // attack a pokemon
-                    var attackResults = attackService.Value.Attack(attack);
+                    var attackResults = await attackService.Value.Attack(attack);
                     Console.WriteLine("Did I attack?");
 
                     // If attackResults are null then throw exception
