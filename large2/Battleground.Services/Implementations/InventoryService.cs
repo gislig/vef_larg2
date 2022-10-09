@@ -22,7 +22,7 @@ public class InventoryService : IInventoryService
     // Get all items in inventory
     public async Task<IEnumerable<PlayerInventory>> GetInventoryItems()
     {
-        var inventoryItems = _dbContext.PlayerInventories.ToList();
+        var inventoryItems = await _dbContext.PlayerInventories.ToListAsync();
         
         return inventoryItems;
     }
@@ -30,7 +30,7 @@ public class InventoryService : IInventoryService
     // Get all items in inventory by player id
     public async Task<IEnumerable<PlayerInventory>> GetInventoryItemsByPlayerId(int playerId)
     {
-        var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId).ToList();
+        var inventoryItems = await _dbContext.PlayerInventories.Where(x => x.PlayerId == playerId).ToListAsync();
         
         return inventoryItems;
     }
@@ -38,7 +38,7 @@ public class InventoryService : IInventoryService
     // Get all items in inventory by item id
     public async Task<IEnumerable<PlayerInventory>> GetInventoryItemsByItemId(string pokemonIdentifier)
     {
-        var inventoryItems = _dbContext.PlayerInventories.Where(x => x.PokemonIdentifier == pokemonIdentifier).ToList();
+        var inventoryItems = await _dbContext.PlayerInventories.Where(x => x.PokemonIdentifier == pokemonIdentifier).ToListAsync();
         
         return inventoryItems;
     }
@@ -57,7 +57,7 @@ public class InventoryService : IInventoryService
     public async Task<bool> AddPokemonToPlayer(InventoryInputModel inventoryInput)
     {
         // Check if the player already has the pokemon
-        var playerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
+        var playerInventory = await _dbContext.PlayerInventories.FirstOrDefaultAsync(x => x.PlayerId == inventoryInput.PlayerId && x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
         
         if (playerInventory != null)
         {
@@ -65,14 +65,14 @@ public class InventoryService : IInventoryService
         }
         
         // Check if the pokemon exists in the on the web api
-        var pokemon = _pokemonService.GetPokemonByName(inventoryInput.PokemonIdentifier);
+        var pokemon = await _pokemonService.GetPokemonByName(inventoryInput.PokemonIdentifier);
         if(pokemon == null)
         {
             return false;
         }
         
         // Check if other players have the pokemon
-        var otherPlayerInventory = _dbContext.PlayerInventories.FirstOrDefault(x => x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
+        var otherPlayerInventory = await _dbContext.PlayerInventories.FirstOrDefaultAsync(x => x.PokemonIdentifier.ToLower() == inventoryInput.PokemonIdentifier.ToLower());
         
         // If some other player has the pokemon then return false
         if (otherPlayerInventory != null)
@@ -81,7 +81,7 @@ public class InventoryService : IInventoryService
         }
         
         // Check if the player has 10 pokemon, if so then return false
-        var playerInventories = _dbContext.PlayerInventories.Where(x => x.PlayerId == inventoryInput.PlayerId).ToList();
+        var playerInventories = await _dbContext.PlayerInventories.Where(x => x.PlayerId == inventoryInput.PlayerId).ToListAsync();
         if (playerInventories.Count >= 10)
         {
             return false;
@@ -118,7 +118,7 @@ public class InventoryService : IInventoryService
         // Remove the pokemon from the player
         try{
             _dbContext.PlayerInventories.Remove(playerInventory);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return true;
         }catch{
             return false;

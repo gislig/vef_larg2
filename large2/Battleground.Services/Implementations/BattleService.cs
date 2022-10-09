@@ -18,7 +18,7 @@ public class BattleService : IBattleService
     // (5%) battle - Should return a specific battle by id
     public async Task<Battle?> GetBattleById(int id)
     {
-        return _dbContext.Battles.Find(id);
+        return await _dbContext.Battles.FindAsync(id);
     }
     
     //allBattles - Should return a collection of all battles. Contains a field
@@ -27,7 +27,7 @@ public class BattleService : IBattleService
     // TODO: Þarf að lagfæra þetta út frá þessum texta
     public async Task<IEnumerable<Battle?>> AllBattles()
     {
-        return _dbContext.Battles.ToList();
+        return await _dbContext.Battles.ToListAsync();
     }
     
     // Create a new battle
@@ -50,8 +50,8 @@ public class BattleService : IBattleService
         }
         
         // get the first item in IEnumerable item of battle.Players
-        var player1 = _dbContext.Players.Find(battle.Players.First());
-        var player2 = _dbContext.Players.Find(battle.Players.Last());
+        var player1 = await _dbContext.Players.FindAsync(battle.Players.First());
+        var player2 = await _dbContext.Players.FindAsync(battle.Players.Last());
         
         
         // If the player1 or player2 is not found then return null
@@ -89,14 +89,14 @@ public class BattleService : IBattleService
             .Any(x => x.PlayerId == player2.Id && x.PokemonIdentifier == rawPokemon2);
         
 
-        var playersInBattle = _dbContext
+        var playersInBattle = await _dbContext
             .BattlePlayers
             .Include(x => x.Battle)
             .ThenInclude(x => x.BattleStatus)
             .Where(x => x.PlayerInMatchId == player2.Id || x.PlayerInMatchId == player1.Id)
             .Where(x => x.Battle.BattleStatus.Name == "NOT_STARTED" 
                         || x.Battle.BattleStatus.Name == "STARTED")
-            .ToList();
+            .ToListAsync();
 
         if(playersInBattle.Count() >= 1)
         {
@@ -118,7 +118,7 @@ public class BattleService : IBattleService
         
         // Insert battleStatus to database
         _dbContext.BattleStatuses.Add(newBattleStatus);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
         // Get id of the newly created battleStatus
         var battleStatusId = newBattleStatus.Id;
         Console.WriteLine("The id of the battle is : " + battleStatusId);
@@ -134,7 +134,7 @@ public class BattleService : IBattleService
         {
             // Insert battle to database
             _dbContext.Battles.Add(newBattle);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
         catch
         {
@@ -178,7 +178,7 @@ public class BattleService : IBattleService
         
         try{
             // Save changes to database
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             newBattleDto.Id = newBattle.Id;
             newBattleDto.StatusId = newBattleStatus.Id;
             
