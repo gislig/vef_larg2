@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Battleground.Repositories\Battleground.Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SteroidsDI.Core" Version="1.1.0" />
+  </ItemGroup>
+
 </Project>

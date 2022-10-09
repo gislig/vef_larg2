@@ -11,7 +11,7 @@ public class AttackService : IAttackService
     private readonly BattlegroundDbContext _dbContext;
     private readonly IPokemonService _pokemonService;
 
-    public AttackService(BattlegroundDbContext dbContext, PokemonService pokemonService)
+    public AttackService(BattlegroundDbContext dbContext, IPokemonService pokemonService)
     {
         _dbContext = dbContext;
         _pokemonService = pokemonService;
@@ -119,15 +119,24 @@ public class AttackService : IAttackService
             Console.WriteLine("Pokemon 1 attacks");
             pokemon1attacks = true;
         }
-        else
+        else if (attackPokemon1Turn > attackPokemon2Turn)
         {
             Console.WriteLine("Pokemon 2 attacks");
             pokemon2attacks = true;
+        }else if (attackPokemon2Turn > attackPokemon1Turn)
+        {
+            Console.WriteLine("Pokemon 1 attacks");
+            pokemon1attacks = true;
         }
-        
+
         // Get the pokemon status
+        var pokemon1 = await _pokemonService.GetPokemonByName(pokemonsInBattle[0].PokemonIdentifier);
+        var pokemon2 = await _pokemonService.GetPokemonByName(pokemonsInBattle[1].PokemonIdentifier);
         //var pokemon1 = _pokemonService.GetPokemonByName(pokemonsInBattle[0].PokemonIdentifier);
         //var pokemon2 = _pokemonService.GetPokemonByName(pokemonsInBattle[1].PokemonIdentifier);
+        Console.WriteLine("Fighter number 1 is : " + pokemon1.name);
+        Console.WriteLine("Fighter number 2 is : " + pokemon2.name);
+        
         
         // Each attack has a 30% chance of being a critical attack and
         // if the attack is a critical attack it will become 40% more

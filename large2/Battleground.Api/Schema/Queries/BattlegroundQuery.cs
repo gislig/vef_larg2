@@ -21,7 +21,7 @@ namespace Battleground.Api.Schema.Queries
             .ResolveAsync(async context => await _pokemonService.GetAllPokemons());
             
             Field<ListGraphType<BattleType>>("allBattles")
-            .Resolve(context => battleService.Value.GetAllAttacks());
+            .Resolve(context => battleService.Value.AllBattles());
 
             Field<ListGraphType<PlayerType>>("allPlayers")
             .Resolve(context => playerService.Value.AllPlayers());
