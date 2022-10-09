@@ -15,6 +15,7 @@ namespace Battleground.Api.Schema.Types
             Field(x => x.Name).Description("The name of the player.");
             Field(x => x.Deleted).Description("is the player active?");
             Field(x => x.pokemonIdentifier).Description("Pokemons in this player inventory");
+            Field(x => x.inventory, type: typeof(InventoryType)).Description("The inventory of the player");
             // Field<InventoryType>("owners").
 
 //         id: ID*
